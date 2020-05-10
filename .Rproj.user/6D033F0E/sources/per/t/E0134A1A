@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1589147397444.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1280786164",
+    "id" : "E0134A1A",
+    "lastKnownWriteTime" : 1589147415,
+    "last_content_update" : 1589147415820,
+    "path" : "~/Desktop/projg05/scripts/data_study.R",
+    "project_path" : "scripts/data_study.R",
+    "properties" : {
+        "cursorPosition" : "21,0",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

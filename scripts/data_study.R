@@ -1,0 +1,21 @@
+library(tidyverse)
+library(here)
+
+# Import the data
+data_covid19 <-read.csv(here::here("data/metadata.csv"))
+View(data_covid19)
+
+# Number of total patients (360)
+data_covid19 %>% count(patientid) %>% nrow()
+
+# Number of total patients with COVID (160)
+data_covid19 %>% filter(finding== "COVID-19") %>%  count(patientid) %>% nrow()
+
+# Number of x-rays we have of COVID (142)
+data_covid19 %>% filter(finding== "COVID-19" & modality== "X-ray") %>%  count(patientid) %>% nrow()
+
+# Number of x-rays we have of COVID (142)
+data_covid19 %>% filter(finding== "COVID-19" & modality== "X-ray") %>%  count(patientid) %>% nrow()
+
+# Total of 241 Images for all the COVID 19 patients (241)
+data_covid19 %>% filter(finding== "COVID-19" & modality== "X-ray") %>%  count(filename) %>% nrow()
