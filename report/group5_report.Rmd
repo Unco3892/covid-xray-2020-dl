@@ -9,6 +9,27 @@ output:
 ---
 
 
+Try this:
+
+<style>
+table th:first-of-type {
+    width: 40%;
+}
+table th:nth-of-type(2) {
+    width: 20%;
+}
+table th:nth-of-type(3) {
+    width: 5%;
+}
+table th:nth-of-type(4) {
+    width: 15%;
+}
+table th:nth-of-type(5) {
+    width: 20%;
+}
+</style>
+
+
 ## Introduction
 The COVID-19 pandemic, with the SARS-CoV-2 virus unknown only 6 months ago, has impacted our lives tremendously. To date, no vaccine or effective treatment has been found. While the "Great Lockdown" is being slowly lifted in Europe and the US, 2 sets of measures seem critical. The first one is basic hygiene gestures to prevent infection from spreading. The second is the capability of detecting and tracing every person who may have been infected and placing her in quarantine. 
 
@@ -50,8 +71,15 @@ Thus, our research question is
 > **Can Deep Learning be used to rapidly and accurately analyze X-rays pictures to predict COVID-19 ?**
 
 ## Previous approaches
-
-
+| Study               | Type of images | Number of cases                                       | Method used            | Accuracy (%) |
+|---------------------|----------------|-------------------------------------------------------|------------------------|--------------|
+| **Ioannis et al.**  | Chest X-ray    | 224 COVID-19(+)<br> 700 Pneumonia<br> 504 healthy     | VGG-19                 | 93.48        |
+| **Wang and Wong**   | Chest X-ray    | 53 COVID-19(+)<br> 5526 COVID-19(-)<br> 8066 Healthy  | COVID-NET              | 92.4         |
+| **Sethy and Behra** | Chest X-ray    | 25 COVID-19(+)<br> 25 COVID-19(-)                     | ResNet50+<br> SVM      | 95.38        |
+| **Hemdan et al.**   | Chest X-ray    | 25 COVID-19(+)<br> 25 Normal                          | COVIDX-Net             | 90.0         |
+| **Narin et al.**    | Chest X-ray    | 50 COVID-19(+)<br> 50 COVID-19(-)                     | Deep CNN<br> ResNet-50 | 98.0         |
+| **Ozturk et al.**   | Chest X-ray    | 125 COVID-19(+)<br> 500 No-Findings                   | DarkCovidNet           | 98.08        |
+| **Ozturk et al.**   | Chest X-ray    | 125 COVID-19(+)<br> 500 Pneumonia<br> 500 No-Findings | DarkCovidNet           | 87.02        |
 ## Data
 
 
