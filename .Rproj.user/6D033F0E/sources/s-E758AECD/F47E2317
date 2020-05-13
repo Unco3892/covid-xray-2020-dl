@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1589385211195.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "F47E2317",
+    "lastKnownWriteTime" : 4377837819,
+    "last_content_update" : 1589385211195,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "C227F4B4",
+        "caption" : "only_covid",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=only_covid&cache_key=C227F4B4",
+        "displayedObservations" : 140,
+        "environment" : "",
+        "expression" : "only_covid",
+        "object" : "only_covid",
+        "preview" : 0,
+        "totalObservations" : 140,
+        "variables" : 28
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

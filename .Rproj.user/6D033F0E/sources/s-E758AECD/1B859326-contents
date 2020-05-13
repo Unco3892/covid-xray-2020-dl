@@ -1,0 +1,90 @@
+---
+title: 'Project Work'
+author: "Ilia Azizi, Alexandre Schroeter"
+date: "`r format(Sys.time(), '%d %B, %Y')`"   
+output:
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github 
+bibliography: ref.bibtex
+biblio-style: "apalike"
+link-citations: true
+---
+
+
+<style>
+table th:first-of-type {
+    width: 40%;
+}
+table th:nth-of-type(2) {
+    width: 20%;
+}
+table th:nth-of-type(3) {
+    width: 5%;
+}
+table th:nth-of-type(4) {
+    width: 15%;
+}
+table th:nth-of-type(5) {
+    width: 20%;
+}
+</style>
+
+
+## Introduction
+The COVID-19 pandemic, with the SARS-CoV-2 virus unknown only 6 months ago, has impacted our lives tremendously. To date, no vaccine or effective treatment has been found. While the "Great Lockdown" is being slowly lifted in Europe and the US, 2 sets of measures seem critical. The first one is basic hygiene gestures to prevent infection from spreading. The second is the capability of detecting and tracing every person who may have been infected and placing her in quarantine. 
+
+At the moment, different types of testing take place -@kent_2020. The first one, accounting for a vast majority of tests, is called **polymerise chain reaction (PCR) testing**. It is searching for viral RNA and is only possible when the patient is actively infected. The test is performed using nasopharyngeal swab. This is a very labour intensive procedure, where errors are likely to occur. False negatives can be as high as 30%. 
+
+The second category of tests is called **serologic testing**. It does not specifically search for the virus RNA but for antibodies to COVID-19. The test is carried by using a blood sample. Antibodies are produced by the body when an infection with a specific virus takes place. The antibodies are generally produced one or two weeks after infection and are useful to asses who has been in contact with the virus. This kind of test is less useful to detect an infection early and is mainly interesting for epidemiologists to give a clearer picture of the sanitary situation. The result of this test only display who has been infected but it is not possible to determine if and for how long immunity has been acquired for this virus. 
+
+Other tests are under development, notably a **lateral flow assays** which look for a biological marker in different samples (urine, blood, saliva,...). It works just like a pregnancy test and can be used for in-home testing. Other pharmaceuticals are developing **rapid in-clinic antigen testing**. In this procedure, the analyser device uses cartridges where biological components in each cartridge is used to prove if the patient has SARS-CoV-2 or any of 9 other respiratory dieases. 
+
+Depending on the test type and where it is performed, the price can be high. Furthermore, reagents -@heil_2020 are also a key components of most tests and are in short supply. China and the US are producers and exporters of reagents but both countries have been hit by the pandemic. 
+
+All in all, tests are in great demand. 
+
+Up to now, only a fraction of the population has been tested, and even if testing every person may be useless, having enough capabilities is central. 
+
+
+```{r pressure, echo=FALSE, out.width = '100%', message = F, fig.cap = "Number of tests per thousand -@data_2020"}
+library(here)
+knitr::include_graphics(here("images/tests.png"))
+```
+
+Even small countries like Iceland or Luxembourg have only been able to carry 100 tests per thousand inhabitants. 
+
+SARS-CoV-2 transmission is difficult to trace because symptoms can appear as long as 14 days after exposure to the virus. Most symptomatic people have fever, tiredness and a dry cough among others. People are very susceptible to developing a pneumonia. 
+
+Another method used to confirm a diagnosis is the use of chest x-rays to detect the virus. 
+
+However, this method also has advantages and drawbacks. First, it can be carried in almost every country becausethe material to conduct the test is ubiquitous. Second, it is less costly than a CT scan or PCR test and most of the time CT scans can only be carried in bigger hospitals. Finally, X-rays can be conducted more safely than the nasal swab method because they do not risk aerosolizing the virus when the test is conducted. 
+
+X-rays drawbacks include increased difficulty of detecting asymptomatic cases, no at-home testing and finally the use of a radiologist needed to analyze the pictures.
+
+Still, no method will solve the problem on its own and as explained above, a variety of methods may help overcome the shortage. For example, it could be interesting to use X-rays primarily to determine if one is COVID positive so that PCR tests may be allocated elsewhere, where X-rays cannot be used. 
+
+Therefore, having a cheap, fast and reliable method of X-rays analysis is our motivation. -@hemdan2020covidxnet
+
+## Research question
+Thus, our research question is 
+
+> **Can Deep Learning be used to rapidly and accurately analyze X-rays pictures to predict COVID-19 ?**
+
+## Previous approaches
+| Study               | Type of images | Number of cases                                       | Method used            | Accuracy (%) |
+|---------------------|----------------|-------------------------------------------------------|------------------------|--------------|
+| **Ioannis et al.** -@Apostolopoulos_2020  | Chest X-ray    | 224 COVID-19(+)<br> 700 Pneumonia<br> 504 healthy     | VGG-19                 | 93.48        |
+| **Wang and Wong** -@wang2020covidnet   | Chest X-ray    | 53 COVID-19(+)<br> 5526 COVID-19(-)<br> 8066 Healthy  | COVID-NET              | 92.4         |
+| **Sethy and Behra** -@articlesethy | Chest X-ray    | 25 COVID-19(+)<br> 25 COVID-19(-)                     | ResNet50+<br> SVM      | 95.38        |
+| **Hemdan et al.** -@hemdan2020covidxnet  | Chest X-ray    | 25 COVID-19(+)<br> 25 Normal                          | COVIDX-Net             | 90.0         |
+| **Narin et al.** -@narin2020automatic   | Chest X-ray    | 50 COVID-19(+)<br> 50 COVID-19(-)                     | Deep CNN<br> ResNet-50 | 98.0         |
+| **Ozturk et al.**  -@ozturk2020automated | Chest X-ray    | 125 COVID-19(+)<br> 500 No-Findings                   | DarkCovidNet           | 98.08        |
+| **Ozturk et al.**-@ozturk2020automated  | Chest X-ray    | 125 COVID-19(+)<br> 500 Pneumonia<br> 500 No-Findings | DarkCovidNet           | 87.02        |
+## Data
+
+
+## Methodology 
+
+## References
+
