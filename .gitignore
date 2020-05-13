@@ -5,5 +5,5 @@
 *.npz
 *.jpg
 *.jpeg
-*.PNG
+*.png
 .DS_Store
