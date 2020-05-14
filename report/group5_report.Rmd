@@ -81,7 +81,31 @@ Thus, our research question is
 | **Narin et al.** -@narin2020automatic   | Chest X-ray    | 50 COVID-19(+)<br> 50 COVID-19(-)                     | Deep CNN<br> ResNet-50 | 98.0         |
 | **Ozturk et al.**  -@ozturk2020automated | Chest X-ray    | 125 COVID-19(+)<br> 500 No-Findings                   | DarkCovidNet           | 98.08        |
 | **Ozturk et al.**-@ozturk2020automated  | Chest X-ray    | 125 COVID-19(+)<br> 500 Pneumonia<br> 500 No-Findings | DarkCovidNet           | 87.02        |
+
+The traditional approach consists of using Convolutional Neural Networks(CNN) to solve this task. 
+Half of the previous approaches use transfer learning for the purpose. VGG_19 and ResNet50 are the pretrained networks of preference. Sethy and Behra use a Support Vector Machine on top of their CNN, at the very end of the dense layers in place of the traditional softmax activation function. 
+
+The other half of the approaches use customized networks such as the COVIDX-Net or the DarkCovidNet whose architecture is based on the DarkNet model. The DarkNet model is a model available on MATLAB which is 19 layers deep.
+
+
 ## Data
+As SARS-CoV-2 is a new virus, most X-rays available come from different sources. At the time being, 5 of them are worth mentionning:
+
+a.<a href="https://cases.rsna.org/coronavirus/"> The Radiological Society of North America (RSNA)</a> <br>
+b. <a href=" https://radiopaedia.org/search?utf8=%E2%9C%93&q=covid&scope=all&lang=us/"> Radiopaedia</a><br>
+c. <a href="https://www.sirm.org/en/category/articles/covid-19-database/">The Italian Society of Medical and Interventional Radiology (SIRM)</a><br>
+d. <a href="https://www.eurorad.org/"> Eurorad.</a><br>
+e. <a href="https://coronacases.org/forum/coronacases-org-helping-radiologists-to-help-people-in-more-than-100-countries-1"> Coronacases.org</a>
+
+As most of the data is not centralized, and therefore not always reliable, one of the leading repos on COVID-19 positive (pneumonia) X-rays is https://github.com/ieee8023/covid-chestxray-dataset. Data can be downloaded freely. 
+This repo is approved by the University of Montreal's Ethics Committee and is being continuously updated. Furthermore, previous studies have already used this repo. We sample 140 pictures of it. 
+
+To find COVID-19 negative pictures, we use another dataset provided by https://data.mendeley.com/datasets/rscbjbr9sj/3. We randomly sample 140 negative X-rays. 
+
+Furthermore, we sample 140 bacterial pneumonia and 140 non-COVID-19 viral pneumonia. 
+
+
+**THE TOTAL SIZE OF THE DATA IS**
 
 
 ## Methodology 
