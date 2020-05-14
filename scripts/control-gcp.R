@@ -4,11 +4,10 @@ library(cloudml)
 
 # Placing all the data on the storage.
 gs_copy(
-    source = here::here("-"),
-    destination = "gs://-/",
-    recursive = TRUE
+  source = here::here("data/final_data/"),
+  destination = "gs://covid-pw2/",
+  recursive = TRUE
 )
-
 # Change the path after uplading the files
 setwd(here("scripts"))
 
