@@ -6,24 +6,30 @@ library(tfruns)
 # ------------------------------------
 FLAGS <- flags(
   flag_numeric("units1", 200),
-  flag_numeric("units2", 100, 200),
-  flag_numeric("lr", 0.0001), 
-  flag_string("optimizer", "rmsprop", "adamax"),
-  flag_string("activ", "relu", "selu")
+  flag_numeric("units2", 200),
+  flag_numeric("lr", 0.0001),
+  flag_string("optimizer", "rmsprop"),
+  flag_string("activ", "relu")
 )
 
+# All the hyperparameters have to go the yml file that will be sent to the cloud:
+  # - 100 from unit2
+  # - "adamax" from optimizer
+  # - "selu" activ
 
 # Define the generator
 # ------------------------------------
-generator <- image_data_generator(rescale = 1 / 255, validation_split = 0.2, zoom_range = 0.2)
-
+generator <-
+  image_data_generator(
+    rescale = 1 / 255,
+    validation_split = 0.2,
+    zoom_range = 0.2
+  )
 
 # Import images
 # ------------------------------------
 train <- flow_images_from_directory(
-  directory = gs_data_dir_local(
-    "gs://covid-pw2/data/final_data/train"
-  ),
+  directory = gs_data_dir_local("gs://covid-pw2/data/final_data/train"),
   target_size = c(100, 100),
   generator = generator,
   batch_size = 16,
@@ -31,9 +37,7 @@ train <- flow_images_from_directory(
 )
 
 valid <- flow_images_from_directory(
-  directory = gs_data_dir_local(
-    "gs://covid-pw2/data/final_data/train"
-  ),
+  directory = gs_data_dir_local("gs://covid-pw2/data/final_data/train"),
   target_size = c(100, 100),
   generator = generator,
   batch_size = 16,
@@ -42,16 +46,16 @@ valid <- flow_images_from_directory(
 
 # Define the generator
 # ------------------------------------
-generator <- image_data_generator(rescale = 1 / 255, validation_split = 0.2)
+generator <-
+  image_data_generator(rescale = 1 / 255, validation_split = 0.2)
 
 
-# WHY TWICE?
+# !!! WHY TWICE?!!!
+
 # Import images
 # ------------------------------------
 train <- flow_images_from_directory(
-  directory = gs_data_dir_local(
-    "gs://covid-pw2/data/final_data/train"
-  ),
+  directory = gs_data_dir_local("gs://covid-pw2/data/final_data/train"),
   target_size = c(224, 224),
   generator = generator,
   batch_size = 8,
@@ -59,9 +63,7 @@ train <- flow_images_from_directory(
 )
 
 valid <- flow_images_from_directory(
-  directory = gs_data_dir_local(
-    "gs://deep-learning-274116/natural-images/train"
-  ),
+  directory = gs_data_dir_local("gs://covid-pw2/data/final_data/train"),
   target_size = c(224, 224),
   generator = generator,
   batch_size = 8,
@@ -73,9 +75,11 @@ valid <- flow_images_from_directory(
 #DenseNet201 model architecture
 
 
-conv_base <- application_densenet201(include_top = FALSE, 
-                                     weights = "imagenet", 
-                                     input_shape = c(224, 224, 3))
+conv_base <- application_densenet201(
+  include_top = FALSE,
+  weights = "imagenet",
+  input_shape = c(224, 224, 3)
+)
 
 freeze_weights(conv_base)
 

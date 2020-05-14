@@ -3,13 +3,6 @@ library(cloudml)
 library(tfruns)
 library(here)
 
-# Define the hyperparameter for tuning
-# ------------------------------------
-FLAGS <- flags(
-  flag_numeric("lr", 0.0001)
-)
-
-
 # Define the generator
 # ------------------------------------
 generator <- image_data_generator(rescale = 1 / 255, validation_split = 0.2, zoom_range = 0.2)
@@ -32,14 +25,13 @@ valid <- flow_images_from_directory(
   subset = "validation"
 )
 
-
 #-----------------------------------------------------#
 #DenseNet201 model architecture
-
-
-conv_base <- application_densenet201(include_top = FALSE, 
-                                     weights = "imagenet", 
-                                     input_shape = c(224, 224, 3))
+conv_base <- application_densenet201(
+  include_top = FALSE,
+  weights = "imagenet",
+  input_shape = c(224, 224, 3)
+)
 
 freeze_weights(conv_base)
 
@@ -53,7 +45,7 @@ model <- keras_model_sequential() %>%
 
 model %>% compile(
   optimizer = optimizer_rmsprop(lr = 0.0001),
-  loss = loss_categorical_crossentropy,
+  loss = loss_binary_crossentropy,
   metric = "accuracy"
 )
 
