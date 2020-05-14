@@ -1,0 +1,14 @@
+trainingInput:
+  scaleTier: CUSTOM
+  masterType: standard_p100
+  region: europe-west1
+  hyperparameters:
+    goal: MAXIMIZE
+    hyperparameterMetricTag: val_acc
+    maxParallelTrials: 3
+    maxTrials: 3
+    algorithm: GRID_SEARCH
+    params:
+      - parameterName: lr
+        type: DISCRETE
+        discreteValues: [0.000001, 0.00001,0.0005]
