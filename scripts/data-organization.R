@@ -1,13 +1,9 @@
 library(tidyverse)
 library(here)
-library(stringi)
-library(stringr)
-library(keras)
-library(tfruns)
 
-# ========
-# Chestxray
-# ========
+# ===============================
+# chestxray: COVID Positive cases
+# ===============================
 # First we do a small eda analysis
 # Import the data
 data_covid19 <-read.csv(here::here("data/chestxray_COVID/metadata.csv"))
@@ -27,71 +23,94 @@ data_covid19 %>% filter(finding== "COVID-19" & modality== "X-ray") %>% nrow()
 
 # WHAT WE WILL USE: Number of x-rays we have of COVID+ PA angle (140 instances)
 only_covid <- data_covid19 %>% filter(finding== "COVID-19" & modality== "X-ray" & view=="PA")
-filestocopy <- as.vector(only_covid$filename)
+# We do 80-20 for train and test
+filestocopy_pos_train <- as.vector(only_covid$filename)[1:112]
+filestocopy_pos_test <- as.vector(only_covid$filename)[113:140]
 
 # ~~~~
 # After having finished the eda, we come across moving the files to a new folder aclled final_data/COVID+
-
+# ~~~~
 # Set both the directory to take the images as well as the target directory
-org_dir <- here::here("data/chestxray_COVID/images")
-target_dir <- here::here("data/final_data/COVID+")
+org_dir_positive <- here::here("data/chestxray_COVID/images")
+tar_dir_pos_train<- here::here("data/final_data/train/COVID+")
+tar_dir_post_test<- here::here("data/final_data/test/COVID+")
 
-# Finally we copy the files from the only_covid cases
-lapply(filestocopy, function(x) file.copy(paste (org_dir, x , sep = "/"),paste (target_dir,x, sep = "/"), recursive = FALSE,  copy.mode = TRUE))
+# We copy the files for the train (COVID+)
+lapply(filestocopy_pos_train, function(x) file.copy(paste (org_dir_positive, x , sep = "/"),paste (tar_dir_pos_train,x, sep = "/"), recursive = FALSE,  copy.mode = TRUE, overwrite = TRUE))
 
-# ======================================
-# Kermany datasetpart 1  (take the normal cases)
-# ======================================
+# We copy the files for the test (COVID+)
+lapply(filestocopy_pos_test, function(x) file.copy(paste (org_dir_positive, x , sep = "/"),paste (tar_dir_post_test,x, sep = "/"), recursive = FALSE,  copy.mode = TRUE, overwrite = TRUE))
+
+# =============================
+# Kermany dataset: Normal cases
+# =============================
 # Sampling Images from the kermany data for normal to have a balanced dataset
-
 # Set both the directory to take the images as well as the target directory for negative COVID cases
-org_dir2 <- here::here("data/kermany_OTHERS/chest_xray/train/NORMAL")
-target_dir2 <- here::here("data/final_data/COVID-")
+org_dir_negative <- here::here("data/kermany_OTHERS/chest_xray/train/NORMAL")
+tar_dir_neg_train <- here::here("data/final_data/train/COVID-")
+tar_dir_neg_test<- here::here("data/final_data/test/COVID-")
 
 # Now list the files
-jpeg2 <- list.files(org_dir2, pattern = ".jpeg")
+jpeg2 <- list.files(org_dir_negative, pattern = ".jpeg")
 
-# We randomly take the same number photos as the COVID+
+# We randomly take the same number photos as the COVID+ and then divide them into train and test
 set.seed(5)
-filestocopy2 <- as.vector(sample(jpeg2, nrow(only_covid)))
+all_negatives <- as.vector(sample(jpeg2, nrow(only_covid)))
+filestocopy_neg_train <- all_negatives[1:112]
+filestocopy_neg_test <- all_negatives[113:140]
 
-# Finally we copy the files as in the previous case
-lapply(filestocopy2, function(x) file.copy(paste (org_dir2, x , sep = "/"),paste (target_dir2,x, sep = "/"), recursive = FALSE,  copy.mode = TRUE))
+# We copy the files for the train (COVID-)
+lapply(filestocopy_neg_train, function(x) file.copy(paste (org_dir_negative, x , sep = "/"),paste (tar_dir_neg_train,x, sep = "/"), recursive = FALSE,  copy.mode = TRUE, overwrite = TRUE))
 
-# =======================================
-# Kermany dataset part 2 (Pneumonia VIRAL)
-# =======================================
+# We copy the files for the test (COVID-)
+lapply(filestocopy_neg_test, function(x) file.copy(paste (org_dir_negative, x , sep = "/"),paste (tar_dir_neg_test,x, sep = "/"), recursive = FALSE,  copy.mode = TRUE, overwrite = TRUE))
+
+# ======================================
+# Kermany dataset: Pneumonia VIRAL cases
+# ======================================
 # Sampling Images from the kermany data for VIRAL pneumonia to have a balanced dataset
 
 # Set both the directory to take the images as well as the target directory for negative COVID cases
-org_dir3 <- here::here("data/kermany_OTHERS/chest_xray/train/PNEUMONIA")
-target_dir3 <- here::here("data/final_data/Pneumonia_viral")
+org_dir_viral <- here::here("data/kermany_OTHERS/chest_xray/train/PNEUMONIA")
+tar_dir_vir_train <- here::here("data/final_data/train/Pneumonia_viral")
+tar_dir_vir_test <- here::here("data/final_data/test/Pneumonia_viral")
 
 # Now list the files
-jpeg3 <- list.files(org_dir3, pattern = "VIRUS")
+jpeg3 <- list.files(org_dir_viral, pattern = "VIRUS")
 
 # We randomly take the same number photos as the COVID+
 set.seed(5)
-filestocopy3 <- as.vector(sample(jpeg3, nrow(only_covid)))
+all_virus <- as.vector(sample(jpeg3, nrow(only_covid)))
+filestocopy_vir_train <- all_virus[1:112]
+filestocopy_vir_test<- all_virus[113:140]
 
-# Finally we copy the files as in the previous case
-lapply(filestocopy3, function(x) file.copy(paste (org_dir3, x , sep = "/"),paste (target_dir3,x, sep = "/"), recursive = FALSE,  copy.mode = TRUE))
+# We copy the files for the train (VIRAL +)
+lapply(filestocopy_vir_train, function(x) file.copy(paste (org_dir_viral, x , sep = "/"),paste (tar_dir_vir_train,x, sep = "/"), recursive = FALSE,  copy.mode = TRUE, overwrite = TRUE))
 
-# ============================================
-# Kermany dataset part 2 (Pneumonia BACTERIAL)
-# ============================================
+# We copy the files for the test (VIRAL +)
+lapply(filestocopy_vir_test, function(x) file.copy(paste (org_dir_viral, x , sep = "/"),paste (tar_dir_vir_test,x, sep = "/"), recursive = FALSE,  copy.mode = TRUE, overwrite = TRUE))
+
+# ====================================
+# Kermany dataset: Pneumonia BACTERIAL
+# ====================================
 # Sampling Images from the kermany data for BACTERIAL pneumonia to have a balanced dataset
 
 # Set both the directory to take the images as well as the target directory for negative COVID cases
-org_dir4 <- here::here("data/kermany_OTHERS/chest_xray/train/PNEUMONIA")
-target_dir4 <- here::here("data/final_data/Pneumonia_bacterial")
+org_dir_bac <- here::here("data/kermany_OTHERS/chest_xray/train/PNEUMONIA")
+tar_dir_bac_train <- here::here("data/final_data/train/Pneumonia_bacterial")
+tar_dir_bac_test <- here::here("data/final_data/test/Pneumonia_bacterial")
 
 # Now list the files
-jpeg4 <- list.files(org_dir4, pattern = "BACTERIA")
+jpeg4 <- list.files(org_dir_bac, pattern = "BACTERIA")
 
 # We randomly take the same number photos as the COVID+
 set.seed(5)
-filestocopy4 <- as.vector(sample(jpeg4, nrow(only_covid)))
+all_bacteria <- as.vector(sample(jpeg4, nrow(only_covid)))
+filestocopy_bac_train <- all_bacteria[1:112]
+filestocopy_bac_test<- all_bacteria[113:140]
 
-# Finally we copy the files as in the previous case
-lapply(filestocopy4, function(x) file.copy(paste (org_dir4, x , sep = "/"),paste (target_dir4,x, sep = "/"), recursive = FALSE,  copy.mode = TRUE))
+# Finally, we once again copy the files for the train (BACTERIAL +)
+lapply(filestocopy_bac_train, function(x) file.copy(paste (org_dir_bac, x , sep = "/"),paste (tar_dir_bac_train,x, sep = "/"), recursive = FALSE,  copy.mode = TRUE, overwrite = TRUE))
+
+# We do the same for the train set of (BACTERIAL +)
+lapply(filestocopy_bac_test, function(x) file.copy(paste (org_dir_bac, x , sep = "/"),paste (tar_dir_bac_test,x, sep = "/"), recursive = FALSE,  copy.mode = TRUE, overwrite = TRUE))
