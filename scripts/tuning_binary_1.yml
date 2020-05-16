@@ -1,12 +1,12 @@
 trainingInput:
   scaleTier: CUSTOM
-  masterType: complex_model_m_gpu
+  masterType: standard_p100
   region: europe-west1
   hyperparameters:
     goal: MAXIMIZE
     hyperparameterMetricTag: val_acc
     maxParallelTrials: 4
-    maxTrials: 4
+    maxTrials: 20
     algorithm: GRID_SEARCH
     enableTrialEarlyStopping: True
     params:
@@ -20,9 +20,9 @@ trainingInput:
         type: DISCRETE
         discreteValues: []
       - parameterName: optimizer
-        type: CATEGORICAL
+        type: DISCRETE
         categoricalValues: []
       - parameterName: activ
-        type: CATEGORICAL
+        type: DISCRETE
         categoricalValues: []
 
