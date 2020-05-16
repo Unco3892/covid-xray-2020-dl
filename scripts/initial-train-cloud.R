@@ -11,3 +11,11 @@ setwd("runs")
 
 # Collecting the final re-train model and placing the model in the "results" folder
 job_collect("-")
+
+
+install.packages("reticulate")
+library(reticulate)
+install_miniconda()
+install.packages("keras")
+library(keras)
+install_keras(method = "conda")
