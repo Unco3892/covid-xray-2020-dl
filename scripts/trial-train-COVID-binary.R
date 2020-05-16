@@ -13,7 +13,8 @@ generator <-
 # Import images
 # ------------------------------------
 train <- flow_images_from_directory(
-  directory = gs_data_dir_local("gs://covid-pw2/data/final_data/train"),
+  # directory = gs_data_dir_local("gs://covid-pw2/data/final_data/train"),
+  
   target_size = c(224, 224),
   generator = generator,
   batch_size = 16,
@@ -21,7 +22,7 @@ train <- flow_images_from_directory(
 )
 
 valid <- flow_images_from_directory(
-  directory = gs_data_dir_local("gs://covid-pw2/data/final_data/train"),
+  # directory = gs_data_dir_local("gs://covid-pw2/data/final_data/train"),
   target_size = c(224, 224),
   generator = generator,
   batch_size = 16,
@@ -29,7 +30,7 @@ valid <- flow_images_from_directory(
 )
 
 #-----------------------------------------------------#
-#DenseNet201 model architecture
+# DenseNet201 model architecture
 # conv_base <- application_densenet201(
 #   include_top = FALSE,
 #   weights = "imagenet",
