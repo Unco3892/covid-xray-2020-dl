@@ -4,7 +4,7 @@ library(cloudml)
 
 
 # Training on the cloud
-cloudml_train(here::here("scripts/trial-train-COVID-binary.R"), master_type = "standard_p100")
+cloudml_train(here::here("scripts/train-COVID-binary.R"), master_type = "standard_p100")
 
 # Setting the path for downloading the files
 setwd("runs")
@@ -13,9 +13,3 @@ setwd("runs")
 job_collect("-")
 
 
-install.packages("reticulate")
-library(reticulate)
-install_miniconda()
-install.packages("keras")
-library(keras)
-install_keras(method = "conda")

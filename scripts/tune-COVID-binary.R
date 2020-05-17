@@ -7,8 +7,8 @@ library(kableExtra)
 
 
 # The tuning will take place on the cloud
-cloudml_train(file="train-COVID-binary.R",
-              config = "tuning_binary_1.yml")
+cloudml_train(file=here::here("scripts/train-COVID-binary.R"),
+              config = here::here("scripts/tuning_binary_1.yml"))
 
 # Setting the path for collecting the files
 setwd(here("runs"))

@@ -6,10 +6,8 @@ library(tfruns)
 # ------------------------------------
 FLAGS <- flags(
   flag_numeric("units1", 200),
-  flag_numeric("units2", 200),
-  flag_numeric("lr", 0.0001),
-  flag_string("optimizer", "rmsprop"),
-  flag_string("activ", "relu")
+  flag_numeric("units2", 100),
+  flag_numeric("lr", 0.0001)
 )
 
 # All the hyperparameters have to go the yml file that will be sent to the cloud:
@@ -29,7 +27,7 @@ generator <-
 # Import images
 # ------------------------------------
 train <- flow_images_from_directory(
-  directory = gs_data_dir_local("gs://covid-pw2/data/final_data/train"),
+  directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/train"),
   target_size = c(100, 100),
   generator = generator,
   batch_size = 16,
@@ -37,7 +35,7 @@ train <- flow_images_from_directory(
 )
 
 valid <- flow_images_from_directory(
-  directory = gs_data_dir_local("gs://covid-pw2/data/final_data/train"),
+  directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/train"),
   target_size = c(100, 100),
   generator = generator,
   batch_size = 16,
@@ -50,32 +48,12 @@ generator <-
   image_data_generator(rescale = 1 / 255, validation_split = 0.2)
 
 
-# !!! WHY TWICE?!!!
-
-# Import images
-# ------------------------------------
-train <- flow_images_from_directory(
-  directory = gs_data_dir_local("gs://covid-pw2/data/final_data/train"),
-  target_size = c(224, 224),
-  generator = generator,
-  batch_size = 8,
-  subset = "training"
-)
-
-valid <- flow_images_from_directory(
-  directory = gs_data_dir_local("gs://covid-pw2/data/final_data/train"),
-  target_size = c(224, 224),
-  generator = generator,
-  batch_size = 8,
-  subset = "validation"
-)
-
 
 #-----------------------------------------------------#
-#DenseNet201 model architecture
+#VGG-16 model architecture
 
 
-conv_base <- application_densenet201(
+conv_base <- application_vgg16(
   include_top = FALSE,
   weights = "imagenet",
   input_shape = c(224, 224, 3)
@@ -86,13 +64,13 @@ freeze_weights(conv_base)
 model <- keras_model_sequential() %>%
   conv_base %>%
   layer_flatten() %>%
-  layer_dense(units = FLAGS$units1, activation = FLAGS$activ) %>%
-  layer_dense(units = FLAGS$units2, activation = FLAGS$activ) %>%
+  layer_dense(units = FLAGS$units1, activation = "relu") %>%
+  layer_dense(units = FLAGS$units2, activation = "relu") %>%
   layer_dense(units = 2, activation = "softmax")
 
 
 model %>% compile(
-  optimizer = match.fun(FLAGS$optimizer)(lr = FLAGS$lr),
+  optimizer = rmsprop(lr = FLAGS$lr),
   loss = loss_categorical_crossentropy,
   metric = "accuracy"
 )
@@ -100,7 +78,7 @@ model %>% compile(
 model %>% fit_generator(
   generator = train,
   steps_per_epoch = train$n / train$batch_size,
-  epochs = 100,
+  epochs = 30,
   callbacks = callback_early_stopping(patience = 7,
                                       restore_best_weights = TRUE),
   validation_data = valid,

@@ -13,7 +13,7 @@ generator <-
 # Import images
 # ------------------------------------
 train <- flow_images_from_directory(
-  directory = gs_data_dir_local("gs://covid-pw2/data/final_data/train"),
+  directory = gs_data_dir_local("gs://covid-pw2/final_data/train"),
   # directory = here::here("data/final_data/train"),
   target_size = c(224, 224),
   generator = generator,
@@ -38,7 +38,7 @@ valid <- flow_images_from_directory(
 #   input_shape = c(224, 224, 3)
 # )
 
-conv_base <- application_vgg16(
+conv_base <- application_xception(
   include_top = FALSE,
   weights = "imagenet",
   input_shape = c(224, 224, 3)
