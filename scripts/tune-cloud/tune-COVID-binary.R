@@ -2,13 +2,15 @@ library(keras)
 library(tfruns)
 library(here)
 library(cloudml)
-library(tidyverse)
-library(kableExtra)
+# library(tidyverse)
+# library(kableExtra)
 
+# Change the working directory
+# setwd("tune-cloud")
 
 # The tuning will take place on the cloud
-cloudml_train(file=here::here("scripts/train-COVID-binary.R"),
-              config = here::here("scripts/tuning_binary_1.yml"))
+cloudml_train(file=here::here("scripts/tune-cloud/train-COVID-binary.R"),
+              config = here::here("scripts/tune-cloud/tuning_binary_1.yml"))
 
 # Setting the path for collecting the files
 setwd(here("runs"))

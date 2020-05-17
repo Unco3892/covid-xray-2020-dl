@@ -6,16 +6,16 @@ trainingInput:
     goal: MAXIMIZE
     hyperparameterMetricTag: val_acc
     maxParallelTrials: 4
-    maxTrials: 20
-    algorithm: RANDOM_SEARCH
+    maxTrials: 12
+    algorithm: GRID_SEARCH
     enableTrialEarlyStopping: True
     params:
       - parameterName: units1
         type: DISCRETE
-        discreteValues: [1000,500,200]
+        discreteValues: [200, 500,1000]
       - parameterName: units2
         type: DISCRETE
-        discreteValues: [100,50]
+        discreteValues: [50,100]
       - parameterName: lr
         type: DISCRETE
-        discreteValues: [0.0001,0.001]
+        discreteValues: [0.0001, 0.001]

@@ -6,7 +6,7 @@ library(tfruns)
 # ------------------------------------
 FLAGS <- flags(
   flag_numeric("units1", 200),
-  flag_numeric("units2", 100),
+  flag_numeric("units2", 50),
   flag_numeric("lr", 0.0001)
 )
 
@@ -42,18 +42,10 @@ valid <- flow_images_from_directory(
   subset = "validation"
 )
 
-# Define the generator
-# ------------------------------------
-generator <-
-  image_data_generator(rescale = 1 / 255, validation_split = 0.2)
-
-
-
 #-----------------------------------------------------#
 #VGG-16 model architecture
 
-
-conv_base <- application_vgg16(
+conv_base <- keras::application_vgg16(
   include_top = FALSE,
   weights = "imagenet",
   input_shape = c(224, 224, 3)
@@ -66,12 +58,12 @@ model <- keras_model_sequential() %>%
   layer_flatten() %>%
   layer_dense(units = FLAGS$units1, activation = "relu") %>%
   layer_dense(units = FLAGS$units2, activation = "relu") %>%
-  layer_dense(units = 2, activation = "softmax")
+  layer_dense(units = 2, activation = "sigmoid")
 
 
 model %>% compile(
   optimizer = rmsprop(lr = FLAGS$lr),
-  loss = loss_categorical_crossentropy,
+  loss = loss_binary_crossentropy,
   metric = "accuracy"
 )
 
