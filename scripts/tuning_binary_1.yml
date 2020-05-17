@@ -7,22 +7,15 @@ trainingInput:
     hyperparameterMetricTag: val_acc
     maxParallelTrials: 4
     maxTrials: 20
-    algorithm: GRID_SEARCH
+    algorithm: RANDOM_SEARCH
     enableTrialEarlyStopping: True
     params:
       - parameterName: units1
         type: DISCRETE
-        discreteValues: []
+        discreteValues: [1000,500,200]
       - parameterName: units2
         type: DISCRETE
-        discreteValues: []
+        discreteValues: [100,50]
       - parameterName: lr
         type: DISCRETE
-        discreteValues: []
-      - parameterName: optimizer
-        type: DISCRETE
-        categoricalValues: []
-      - parameterName: activ
-        type: DISCRETE
-        categoricalValues: []
-
+        discreteValues: [0.0001,0.001]
