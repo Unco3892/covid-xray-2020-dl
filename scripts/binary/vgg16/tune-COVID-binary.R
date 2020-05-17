@@ -10,14 +10,12 @@ library(cloudml)
 
 # The tuning will take place on the cloud
 cloudml_train(
-  file = here::here("scripts/binary/train-COVID-binary.R"),
-  config = here::here("scripts/binary/tuning_binary_1.yml")
+  file = here::here("scripts/binary/vgg16/train-COVID-binary.R"),
+  config = here::here("scripts/binary/vgg16/tuning_binary_1.yml")
 )
 
 # Setting the path for collecting the files
 setwd(here("runs/binary/vgg16"))
-getwd()
-setwd(here("runs/binary/densenet121"))
 getwd()
 
 # Collecting the final hyperparamter tuning
