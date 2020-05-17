@@ -5,7 +5,7 @@ library(tfruns)
 # Define the hyperparameter for tuning
 # ------------------------------------
 FLAGS <- flags(
-  flag_numeric("units1", 100),
+  flag_numeric("units1", 200),
   flag_numeric("units2", 100),
   flag_numeric("lr", 0.0001), 
   flag_numeric("dropoutrate", 0.2), 

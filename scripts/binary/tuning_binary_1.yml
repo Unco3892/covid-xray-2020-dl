@@ -6,13 +6,13 @@ trainingInput:
     goal: MAXIMIZE
     hyperparameterMetricTag: val_acc
     maxParallelTrials: 4
-    maxTrials: 
+    maxTrials: 12
     algorithm: GRID_SEARCH
     enableTrialEarlyStopping: True
-    params: 128
+    params:
       - parameterName: units1
         type: DISCRETE
-        discreteValues: [100, 200]
+        discreteValues: [200, 500,1000]
       - parameterName: units2
         type: DISCRETE
         discreteValues: [50,100]
@@ -21,13 +21,9 @@ trainingInput:
         discreteValues: [0.0001, 0.001]
       - parameterName: dropoutrate
         type: DISCRETE
-        discreteValues: [0, 0.2]
+        discreteValues: [0.2, 0.5]
       - parameterName: reg
         type: DISCRETE
-        discreteValues: [0, 0.001]
-      - parameterName: activation
-        type: CATEGORICAL
-        categoricalValues: ["selu", "relu"]
-      - parameterName: optimizer
-        type: CATEGORICAL
-        categoricalValues: ["optimizer_rmsprop", "optimizer_adamax"]
+        discreteValues: [0.001, 0.01]
+        
+  

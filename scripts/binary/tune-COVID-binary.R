@@ -9,20 +9,20 @@ library(cloudml)
 # setwd("tune-cloud")
 
 # The tuning will take place on the cloud
-cloudml_train(file=here::here("scripts/binary/train-COVID-binary.R"),
-              config = here::here("scripts/binary/tuning_binary_1.yml"))
+cloudml_train(file=here::here("scripts/tune-cloud/train-COVID-binary.R"),
+              config = here::here("scripts/tune-cloud/tuning_binary_1.yml"))
 
-cloudml_train(file=here::here("scripts/binary/categorical_gcloud_trial.R"),
-              config = here::here("scripts/binary/categorical_trial.yml"))
+cloudml_train(file=here::here("scripts/tune-cloud/categorical_gcloud_trial.R"),
+              config = here::here("scripts/tune-cloud/categorical_trial.yml"))
 
 # Setting the path for collecting the files
 setwd(here("runs"))
 
 # Collecting the final hyperparamter tuning
-job_collect("cloudml_2020_05_17_154945972", trials = "all")
+job_collect("-", trials = "all")
 
 # Show the runs and sort them based on accuracy
-runs <- ls_runs(runs_dir = here("scripts/runs"))
+runs <- ls_runs(runs_dir = here("runs"))
 
 runs_ex2 <-
     runs %>% filter(cloudml_job == "-") %>% select(flag_lr,

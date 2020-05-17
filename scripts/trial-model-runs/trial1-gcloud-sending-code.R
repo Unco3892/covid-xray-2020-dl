@@ -11,7 +11,8 @@ getwd()
 # ========================================
 # VGG16
 cloudml_train(here::here("scripts/trial1-train-vgg16.R"), master_type = "standard_p100")
-# First trial(with software and seems to be over-fitting because of accuracy of 1) --> job_collect("cloudml_2020_05_17_121925104") 
+First trial(with software and seems to be over-fitting because of accuracy of 1) --> 
+  job_collect("cloudml_2020_05_17_121925104")
 # Second trial (with sigmoid but also seems to be over-fitting) --> job_collect("cloudml_2020_05_17_124519217")
 
 # =========================================

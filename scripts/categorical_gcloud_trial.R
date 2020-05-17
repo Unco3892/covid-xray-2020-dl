@@ -5,13 +5,13 @@ library(tfruns)
 # Define the hyperparameter for tuning
 # ------------------------------------
 FLAGS <- flags(
-  flag_numeric("units1", 100),
+  flag_numeric("units1", 200),
   flag_numeric("units2", 100),
   flag_numeric("lr", 0.0001), 
   flag_numeric("dropoutrate", 0.2), 
   flag_numeric("reg", 0.001),
-  flag_string("optimizer", "optimizer_rmsprop"), 
-  flag_string("activation", "relu")
+  flag_string("optimizer", "optimizer_rmsprop")
+  
 )
 
 # All the hyperparameters have to go the yml file that will be sent to the cloud:
@@ -31,8 +31,8 @@ generator <-
 # Import images
 # ------------------------------------
 train <- flow_images_from_directory(
-  directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/train"),
-  #directory = here::here("data/final_data/binary/train"),
+  #directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/train"),
+  directory = here::here("data/final_data/train"),
   target_size = c(224, 224),
   generator = generator,
   batch_size = 16,
@@ -40,8 +40,8 @@ train <- flow_images_from_directory(
 )
 
 valid <- flow_images_from_directory(
-  directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/train"),
-  #directory = here::here("data/final_data/binary/train"),
+  #directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/train"),
+  directory = here::here("data/final_data/train"),
   target_size = c(224, 224),
   generator = generator,
   batch_size = 16,
@@ -62,8 +62,8 @@ freeze_weights(conv_base)
 model <- keras_model_sequential() %>%
   conv_base %>%
   layer_flatten() %>%
-  layer_dense(units = FLAGS$units1, activation = FLAGS$activation, kernel_regularizer = regularizer_l1(FLAGS$reg)) %>%
-  layer_dense(units = FLAGS$units2, activation = FLAGS$activation) %>%
+  layer_dense(units = FLAGS$units1, activation = "relu", kernel_regularizer = regularizer_l1(FLAGS$reg)) %>%
+  layer_dense(units = FLAGS$units2, activation = "relu") %>%
   layer_dropout(rate = FLAGS$dropoutrate) %>%
   layer_dense(units = 2, activation = "sigmoid")
 
