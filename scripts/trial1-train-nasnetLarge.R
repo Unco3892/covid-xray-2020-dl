@@ -1,19 +1,5 @@
 library(keras)
 library(cloudml)
-library(tfruns)
-
-# Define the hyperparameter for tuning
-# ------------------------------------
-FLAGS <- flags(
-  flag_numeric("units1", 200),
-  flag_numeric("units2", 50),
-  flag_numeric("lr", 0.0001)
-)
-
-# All the hyperparameters have to go the yml file that will be sent to the cloud:
-  # - 100 from unit2
-  # - "adamax" from optimizer
-  # - "selu" activ
 
 # Define the generator
 # ------------------------------------
@@ -28,7 +14,8 @@ generator <-
 # ------------------------------------
 train <- flow_images_from_directory(
   directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/train"),
-  target_size = c(100, 100),
+  # directory = here::here("data/final_data/train"),
+  target_size = c(224, 224),
   generator = generator,
   batch_size = 16,
   subset = "training"
@@ -36,35 +23,39 @@ train <- flow_images_from_directory(
 
 valid <- flow_images_from_directory(
   directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/train"),
-  target_size = c(100, 100),
+  # directory = here::here("data/final_data/train"),
+  target_size = c(224, 224),
   generator = generator,
   batch_size = 16,
   subset = "validation"
 )
 
 #-----------------------------------------------------#
-#VGG-16 model architecture
+# DenseNet201 model architecture
+# conv_base <- application_densenet201(
+#   include_top = FALSE,
+#   weights = "imagenet",
+#   input_shape = c(224, 224, 3)
+# )
 
-conv_base <- keras::application_vgg16(
+conv_base <- application_nasnetlarge(
   include_top = FALSE,
   weights = "imagenet",
   input_shape = c(224, 224, 3)
 )
-
 freeze_weights(conv_base)
 
 model <- keras_model_sequential() %>%
   conv_base %>%
   layer_flatten() %>%
-  layer_dense(units = FLAGS$units1, activation = "relu") %>%
-  layer_dense(units = FLAGS$units2, activation = "relu") %>%
-  layer_dense(units = 2, activation = "softmax")
+  layer_dense(units = 100, activation = "relu") %>%
+  layer_dense(units = 100, activation = "relu") %>%
+  layer_dense(units = 2, activation = "sigmoid")
 
-model %>% compile(
-  optimizer = optimizer_rmsprop(lr = FLAGS$lr),
-  loss = "binary_crossentropy",
-  metric = "accuracy"
-)
+
+model %>% compile(optimizer = optimizer_rmsprop(lr = 0.0001),
+                  loss = loss_binary_crossentropy,
+                  metric = "accuracy")
 
 model %>% fit_generator(
   generator = train,

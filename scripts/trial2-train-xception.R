@@ -13,7 +13,7 @@ generator <-
 # Import images
 # ------------------------------------
 train <- flow_images_from_directory(
-  directory = gs_data_dir_local("gs://covid-pw2/final_data/train"),
+  directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/train"),
   # directory = here::here("data/final_data/train"),
   target_size = c(224, 224),
   generator = generator,
@@ -22,7 +22,7 @@ train <- flow_images_from_directory(
 )
 
 valid <- flow_images_from_directory(
-  directory = gs_data_dir_local("gs://covid-pw2/data/final_data/train"),
+  directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/train"),
   # directory = here::here("data/final_data/train"),
   target_size = c(224, 224),
   generator = generator,
@@ -50,8 +50,7 @@ model <- keras_model_sequential() %>%
   layer_flatten() %>%
   layer_dense(units = 100, activation = "relu") %>%
   layer_dense(units = 100, activation = "relu") %>%
-  layer_dense(units = 4, activation = "softmax")
-
+  layer_dense(units = 2, activation = "sigmoid")
 
 model %>% compile(optimizer = optimizer_rmsprop(lr = 0.0001),
                   loss = loss_binary_crossentropy,
