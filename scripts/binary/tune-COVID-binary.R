@@ -9,37 +9,30 @@ library(cloudml)
 # setwd("tune-cloud")
 
 # The tuning will take place on the cloud
-cloudml_train(file=here::here("scripts/tune-cloud/train-COVID-binary.R"),
-              config = here::here("scripts/tune-cloud/tuning_binary_1.yml"))
-
-cloudml_train(file=here::here("scripts/tune-cloud/categorical_gcloud_trial.R"),
-              config = here::here("scripts/tune-cloud/categorical_trial.yml"))
+cloudml_train(
+  file = here::here("scripts/binary/train-COVID-binary.R"),
+  config = here::here("scripts/binary/tuning_binary_1.yml")
+)
 
 # Setting the path for collecting the files
-setwd(here("runs"))
+setwd(here("runs/binary/vgg16"))
+getwd()
+setwd(here("runs/binary/densenet121"))
+getwd()
 
 # Collecting the final hyperparamter tuning
 job_collect("-", trials = "all")
 
 # Show the runs and sort them based on accuracy
-runs <- ls_runs(runs_dir = here("runs"))
+runs <- ls_runs(runs_dir = here("scripts/runs/binary")) #it could also be categorical
 
-runs_ex2 <-
-    runs %>% filter(cloudml_job == "-") %>% select(flag_lr,
-                                                   metric_acc,
-                                                   metric_val_acc,
-                                                   metric_loss,
-                                                   metric_val_loss,
-                                                   completed) %>% arrange(desc(metric_val_acc)) %>% kable() %>% kable_styling(
-                                                       bootstrap_options = "striped",
-                                                       full_width = F,
-                                                       position = "center"
-)
-
-
-# ====================================
-# Only if needed to do a second tuning
-setwd(here("scripts"))
+runs_report <-
+  runs %>% filter(cloudml_job == "-") %>% select(flag_lr,
+                                                 metric_acc,
+                                                 metric_val_acc,
+                                                 metric_loss,
+                                                 metric_val_loss,
+                                                 completed) %>% arrange(desc(metric_val_acc)) %>% kable() %>% kable_styling(bootstrap_options = "striped",full_width = F,position = "center")
 
 # Only if needed to do a second tuning
 # cloudml_train(file="train-natural-lenet-5.R",
@@ -47,4 +40,4 @@ setwd(here("scripts"))
 
 # Collecting the job
 setwd(here("runs"))
-job_collect("-", trials= "all")
+job_collect("-", trials = "all")
