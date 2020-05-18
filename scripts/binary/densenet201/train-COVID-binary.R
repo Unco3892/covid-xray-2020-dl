@@ -24,7 +24,7 @@ FLAGS <- flags(
 generator <-
   image_data_generator(
     rescale = 1 / 255,
-    validation_split = 0.2,
+    validation_split = 0.5,
     zoom_range = 0.2
   )
 
@@ -65,12 +65,12 @@ model <- keras_model_sequential() %>%
   layer_dense(units = FLAGS$units1, activation = FLAGS$activation, kernel_regularizer = regularizer_l1(FLAGS$reg)) %>%
   layer_dense(units = FLAGS$units2, activation = FLAGS$activation) %>%
   layer_dropout(rate = FLAGS$dropoutrate) %>%
-  layer_dense(units = 2, activation = "sigmoid")
+  layer_dense(units = 2, activation = "softmax")
 
 model %>% compile(
   optimizer = match.fun(FLAGS$optimizer)(lr = FLAGS$lr),
-  loss = "binary_crossentropy",
-  metric = "accuracy"
+  loss = loss_categorical_crossentropy, #loss_categorical_crossentropy
+  metric = metric_categorical_accuracy # metric_categorical_accuracy
 )
 
 model %>% fit_generator(

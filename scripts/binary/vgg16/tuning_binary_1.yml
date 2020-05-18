@@ -1,11 +1,11 @@
 trainingInput:
   scaleTier: CUSTOM
-  masterType: standard_p100
+  masterType: standard_gpu
   region: europe-west1
   hyperparameters:
     goal: MAXIMIZE
     hyperparameterMetricTag: val_acc
-    maxParallelTrials: 4
+    maxParallelTrials: 21
     maxTrials: 128
     algorithm: GRID_SEARCH
     enableTrialEarlyStopping: True
