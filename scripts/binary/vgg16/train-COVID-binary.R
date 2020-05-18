@@ -31,8 +31,8 @@ generator <-
 # Import images
 # ------------------------------------
 train <- flow_images_from_directory(
-  directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/train"),
-  #directory = here::here("data/final_data/binary/train"),
+  # directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/train"),
+  directory = here::here("data/final_data/binary/train"),
   target_size = c(224, 224),
   generator = generator,
   batch_size = 16,
@@ -40,8 +40,8 @@ train <- flow_images_from_directory(
 )
 
 valid <- flow_images_from_directory(
-  directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/train"),
-  #directory = here::here("data/final_data/binary/train"),
+  # directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/train"),
+  directory = here::here("data/final_data/binary/train"),
   target_size = c(224, 224),
   generator = generator,
   batch_size = 16,
@@ -69,8 +69,8 @@ model <- keras_model_sequential() %>%
 
 model %>% compile(
   optimizer = match.fun(FLAGS$optimizer)(lr = FLAGS$lr),
-  loss = "binary_crossentropy",
-  metric = "accuracy"
+  loss = "binary_crossentropy", #loss_categorical_crossentropy
+  metric = "accuracy" # metric_categorical_accuracy
 )
 
 model %>% fit_generator(
