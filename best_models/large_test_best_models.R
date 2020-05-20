@@ -54,9 +54,11 @@ large_test$shuffle <- FALSE
 
 #-----------------------------------------------------#
 #Evaluate model2
-model2 <- load_model_hdf5("best_models/vgg16_binary/best_vgg16_binary.h5")
 
-model2 %>% evaluate_generator(generator = large_test, steps = 1)
+model1 <- load_model_hdf5("best_models/vgg16_binary/best_vgg16_binary.h5")
+model2 <- load_model_hdf5("best_models/vgg16_binary/best_second_vgg16_binary.h5")
+model1 %>% evaluate_generator(generator = large_test,steps = large_test$n / large_test$batch_size)
+model2 %>% evaluate_generator(generator = large_test,steps = large_test$n / large_test$batch_size)
 
 # predicted <- model2 %>% predict_generator(generator = large_test, steps = large_test$n)
 # predicted_tr <- (apply(predicted, MARGIN = 1, which.max) - 1) %>% as.factor()
