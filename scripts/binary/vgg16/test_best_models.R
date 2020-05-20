@@ -73,7 +73,7 @@ freeze_weights(conv_base)
   
   model1 %>% compile(
     optimizer = optimizer_rmsprop(lr = 0.0001),
-    loss = "categorical_crossentropy", #loss_categorical_crossentropy
+    loss = loss_categorical_crossentropy, #loss_categorical_crossentropy
     metric = metric_categorical_accuracy # metric_categorical_accuracy
   )
   
@@ -106,7 +106,7 @@ freeze_weights(conv_base)
   model2 %>% compile(
     optimizer = optimizer_rmsprop(lr = 0.0001),
     #loss = loss_categorical_crossentropy, 
-    loss = "categorical_crossentropy", #loss_categorical_crossentropy
+    loss = loss_categorical_crossentropy, #loss_categorical_crossentropy
     metric = metric_categorical_accuracy # metric_categorical_accuracy
   )
   
