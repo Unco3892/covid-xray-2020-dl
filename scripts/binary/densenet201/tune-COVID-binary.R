@@ -6,13 +6,14 @@ library(cloudml)
 # library(kableExtra)
 
 # Change the working directory
-# setwd("tune-cloud")
+
+setwd(here::here("scripts/binary/densenet201/"))
 
 # The tuning will take place on the cloud
 cloudml_train(
-  file = here::here("scripts/binary/densenet201/train-COVID-binary.R"),
-  config = here::here("scripts/binary/densenet201/tuning_binary_dense1.yml")
-)
+  file = "train-COVID-binary.R",
+  config = "tuning_binary_dense1.yml")
+
 
 # Setting the path for collecting the files
 setwd(here("runs/binary/densenet201"))
@@ -39,3 +40,10 @@ runs_report <-
 # Collecting the job
 setwd(here("runs"))
 job_collect("-", trials = "all")
+
+
+install.packages("remotes")
+library(remotes)
+install_github("irudnyts/cloudml")
+library(cloudml)
+gcloud_install()
