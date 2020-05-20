@@ -50,8 +50,8 @@ compare_runs(
 #  Comparing the fifth and the sixth run
 compare_runs(
   runs = c(
-    here::here("runs/binary/vgg16/runs/cloudml_2020_05_18_145238086-125"), # should be modified
-    here::here("runs/binary/vgg16/runs/cloudml_2020_05_18_145238086-117")  # should be modified
+    here::here("runs/binary/vgg16/runs/cloudml_2020_05_18_145238086-125"),
+    here::here("runs/binary/vgg16/runs/cloudml_2020_05_18_145238086-117")
   )
 ) # 6th run is much more stable because of the optimizer adamax
 
