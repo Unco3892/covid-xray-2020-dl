@@ -55,5 +55,5 @@ compare_runs(
   )
 ) # 6th run is much more stable because of the optimizer adamax
 
-# CONCLUSION: TAKE THE 2ND RUN AND THE 3RD ONE. USE ADAMAX OPTIMIZER
+# CONCLUSION: TAKE THE 2ND RUN AND THE 6TH ONE. USE ADAMAX OPTIMIZER
 
