@@ -31,7 +31,7 @@ generator <-
 # Import images
 # ------------------------------------
 train <- flow_images_from_directory(
-  directory = gs_data_dir_local("gs://covid-pw2/final_data/multiclass/train"),
+  directory = gs_data_dir_local("gs://covid-pw1/final_data/multiclass/train"),
   #directory = here::here("data/final_data/multiclass/train"),
   target_size = c(224, 224),
   generator = generator,
@@ -40,7 +40,7 @@ train <- flow_images_from_directory(
 )
 
 valid <- flow_images_from_directory(
-  directory = gs_data_dir_local("gs://covid-pw2/final_data/multiclass/train"),
+  directory = gs_data_dir_local("gs://covid-pw1/final_data/multiclass/train"),
   #directory = here::here("data/final_data/multiclass/train"),
   target_size = c(224, 224),
   generator = generator,
