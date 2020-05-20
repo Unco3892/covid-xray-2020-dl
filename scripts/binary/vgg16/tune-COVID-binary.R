@@ -27,8 +27,8 @@ View(runs)
 runs_report <- runs %>% select(metric_acc, metric_val_acc,metric_loss,metric_val_loss,flag_lr, epochs_completed, flag_dropoutrate,flag_reg, flag_units1, flag_units2, flag_optimizer,flag_activation, cloudml_state, run_dir) %>% arrange(desc(metric_val_acc), metric_val_loss) %>% kable() %>% kable_styling(bootstrap_options = "striped",full_width = F,position = "center")
 
 # Viewing the best runs
-view_run(here::here("runs/cloudml_2020_05_18_145238086-112")) # The first one drops to almost 40% at one point so it is not good
-view_run(here::here("runs/cloudml_2020_05_18_145238086-112"))
+view_run(here::here("runs/binary/vgg16/runs/cloudml_2020_05_18_145238086-112")) # The first one drops to almost 40% at one point so it is not good
+view_run(here::here("runs/binary/vgg16/runs/cloudml_2020_05_18_145238086-009"))
 
 
 
