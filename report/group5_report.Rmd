@@ -8,6 +8,7 @@ output:
     highlight: textmate
     toc: true
     toc_float: true
+    depth: 1
 bibliography: ref.bibtex
 biblio-style: "apalike"
 link-citations: true
@@ -48,7 +49,13 @@ table th:nth-of-type(5) {
 }
 </style>
 
-
+```{r, include = F}
+library(keras)
+library(cloudml)
+library(tfruns)
+library(kerasR)
+library(caret)
+```
 ## <strong>Introduction</strong>
 The COVID-19 pandemic, with the SARS-CoV-2 virus unknown only 6 months ago, has impacted our lives tremendously. To date, no vaccine or effective treatment has been found. While the "Great Lockdown" is being slowly lifted in Europe and the US, 2 sets of measures seem critical. The first one is basic hygiene gestures to prevent infection from spreading. The second is the capability of detecting and tracing every person who may have been infected and placing her in quarantine. 
 
@@ -132,8 +139,34 @@ Furthermore, we sample 140 bacterial pneumonia and 140 non-COVID-19 viral pneumo
 
 ### Binary VGG16
 
-```{r}
-summary(cars)
+```{r, include = F, results = "hide"}
+#load model
+test <- flow_images_from_directory(
+  directory = here::here("data/final_data/binary/test"),
+  target_size = c(224, 224),
+  generator = generator_test,
+  batch_size = 16
+)
+
+vgg16_binary <- load_model_hdf5(here::here("best_models/vgg16_binary/best_first_vgg16_binary.h5"))
+```
+
+
+```{r, echo = F, fig.align="center"}
+#load model
+summary(vgg16_binary)
+```
+
+
+```{r, echo = F, fig.align="center"}
+#load model
+
+vgg16_binary %>% evaluate_generator(generator = test,steps = test$n)
+
+predicted <- vgg16_binary %>% predict_generator(generator = test, steps = test$n)
+predicted_tr <- (apply(predicted, MARGIN = 1, which.max) - 1) %>% as.factor()
+observed <- test$classes %>% as.factor()
+caret::confusionMatrix(predicted_tr, observed)
 ```
 
 ### Binary DenseNet201

@@ -11,7 +11,7 @@ setwd(here::here("scripts/multiclass/densenet201/"))
 
 # The tuning will take place on the cloud
 cloudml_train(
-  file = "train-COVID-mc.R",
+  file = "train-COVID-mc_den.R",
   config = "tuning_mc_den.yml"
 )
 
@@ -20,13 +20,17 @@ setwd(here("runs/multiclass/densenet201"))
 getwd()
 
 # Collecting the final hyperparamter tuning
-job_collect("-", trials = "all")
+job_collect(" cloudml_2020_05_21_140541169", trials = "all")
 
 # Show the runs and sort them based on accuracy
-runs <- ls_runs(runs_dir = here("scripts/runs/binary")) #it could also be categorical
+runs_den201 <- ls_runs(runs_dir = here("scripts/multiclass/densenet201/runs")) #it could also be categorical
+
+
+View(runs_den201)
+
 
 runs_report <-
-  runs %>% filter(cloudml_job == "-") %>% select(flag_lr,
+  runs %>% filter(cloudml_job == " cloudml_2020_05_21_140541169") %>% select(flag_lr,
                                                  metric_acc,
                                                  metric_val_acc,
                                                  metric_loss,

@@ -1,0 +1,6 @@
+{
+  "loss": [1.1006, 0.5031, 0.4046, 0.3372, 0.241, 0.2331, 0.1798, 0.1804, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+  "categorical_accuracy": [0.5089, 0.7946, 0.8571, 0.875, 0.9196, 0.9152, 0.9554, 0.9554, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+  "val_loss": [1.1426, 1.1696, 1.4333, 1.6439, 1.1911, 2.0366, 1.4339, 1.883, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+  "val_categorical_accuracy": [0.4152, 0.4018, 0.2991, 0.2589, 0.4196, 0.3393, 0.3438, 0.3125, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+}
