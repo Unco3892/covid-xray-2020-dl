@@ -1,15 +1,33 @@
 ---
-title: 'Project Work'
+title: 'Deep Learning Project'
 author: "Ilia Azizi, Alexandre Schroeter"
 date: "`r format(Sys.time(), '%d %B, %Y')`"   
 output:
-  prettydoc::html_pretty:
-    theme: architect
-    highlight: github 
+  html_document:
+    theme: cerulean
+    highlight: textmate
+    toc: true
+    toc_float: true
 bibliography: ref.bibtex
 biblio-style: "apalike"
 link-citations: true
 ---
+<style type="text/css">
+
+body{ /* Normal  */
+      font-size: 18px;
+  }
+  
+h1.title {
+  font-size: 40px;
+  text-align: center
+}
+
+.pad {
+    padding-top: 200px; 
+}
+
+</style>
 
 
 <style>
@@ -31,7 +49,7 @@ table th:nth-of-type(5) {
 </style>
 
 
-## Introduction
+## <strong>Introduction</strong>
 The COVID-19 pandemic, with the SARS-CoV-2 virus unknown only 6 months ago, has impacted our lives tremendously. To date, no vaccine or effective treatment has been found. While the "Great Lockdown" is being slowly lifted in Europe and the US, 2 sets of measures seem critical. The first one is basic hygiene gestures to prevent infection from spreading. The second is the capability of detecting and tracing every person who may have been infected and placing her in quarantine. 
 
 At the moment, different types of testing take place -@kent_2020. The first one, accounting for a vast majority of tests, is called **polymerise chain reaction (PCR) testing**. It is searching for viral RNA and is only possible when the patient is actively infected. The test is performed using nasopharyngeal swab. This is a very labour intensive procedure, where errors are likely to occur. False negatives can be as high as 30%. 
@@ -66,12 +84,12 @@ Still, no method will solve the problem on its own and as explained above, a var
 
 Therefore, having a cheap, fast and reliable method of X-rays analysis is our motivation. -@hemdan2020covidxnet
 
-## Research question
+## <strong>Research question</strong>
 Thus, our research question is 
 
 > **Can Deep Learning be used to rapidly and accurately analyze X-rays pictures to predict COVID-19 ?**
 
-## Previous approaches
+## <strong>Previous approaches </strong>
 | Study               | Type of images | Number of cases                                       | Method used            | Accuracy (%) |
 |---------------------|----------------|-------------------------------------------------------|------------------------|--------------|
 | **Ioannis et al.** -@Apostolopoulos_2020  | Chest X-ray    | 224 COVID-19(+)<br> 700 Pneumonia<br> 504 healthy     | VGG-19                 | 93.48        |
@@ -88,7 +106,7 @@ Half of the previous approaches use transfer learning for the purpose. VGG_19 an
 The other half of the approaches use customized networks such as the COVIDX-Net or the DarkCovidNet whose architecture is based on the DarkNet model. The DarkNet model is a model available on MATLAB which is 19 layers deep.
 
 
-## Data
+## <strong>Data</strong>
 As SARS-CoV-2 is a new virus, most X-rays available come from different sources. At the time being, 5 of them are worth mentionning:
 
 a.<a href="https://cases.rsna.org/coronavirus/"> The Radiological Society of North America (RSNA)</a> <br>
@@ -108,7 +126,29 @@ Furthermore, we sample 140 bacterial pneumonia and 140 non-COVID-19 viral pneumo
 **THE TOTAL SIZE OF THE DATA IS**
 
 
-## Methodology 
+## <strong>Methodology</strong>
 
-## References
+## CNN models{.tabset .tabset-fade}
+
+### Binary VGG16
+
+```{r}
+summary(cars)
+```
+
+### Binary DenseNet201
+```{r}
+summary(cars)
+```
+
+### Multiclass VGG16
+```{r}
+summary(cars)
+```
+
+### Multiclass DenseNet201
+```{r}
+summary(cars)
+```
+## <strong>References</strong>
 
