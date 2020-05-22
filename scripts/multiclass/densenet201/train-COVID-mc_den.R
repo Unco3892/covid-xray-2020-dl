@@ -24,7 +24,7 @@ FLAGS <- flags(
 generator <-
   image_data_generator(
     rescale = 1 / 255,
-    validation_split = 0.5,
+    validation_split = 0.2,
     zoom_range = 0.2
   )
 

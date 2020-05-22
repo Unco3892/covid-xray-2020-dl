@@ -1,0 +1,34 @@
+
+> library(keras)
+
+> library(cloudml)
+
+> library(tfruns)
+
+> FLAGS <- flags(flag_numeric("units1", 100), flag_numeric("units2", 
++     100), flag_numeric("lr", 1e-04), flag_numeric("dropoutrate", 
++     0.2),  .... [TRUNCATED] 
+
+> generator <- image_data_generator(rescale = 1/255, 
++     validation_split = 0.2, zoom_range = 0.2)
+
+> train <- flow_images_from_directory(directory = gs_data_dir_local("gs://covid-pw1/final_data/multiclass/train"), 
++     target_size = c(224, 224), g .... [TRUNCATED] 
+
+> valid <- flow_images_from_directory(directory = gs_data_dir_local("gs://covid-pw1/final_data/multiclass/train"), 
++     target_size = c(224, 224), g .... [TRUNCATED] 
+
+> conv_base <- keras::application_vgg16(include_top = FALSE, 
++     weights = "imagenet", input_shape = c(224, 224, 3))
+
+> freeze_weights(conv_base)
+
+> model <- keras_model_sequential() %>% conv_base %>% 
++     layer_flatten() %>% layer_dense(units = FLAGS$units1, activation = FLAGS$activation, 
++   .... [TRUNCATED] 
+
+> model %>% compile(optimizer = match.fun(FLAGS$optimizer)(lr = FLAGS$lr), 
++     loss = loss_categorical_crossentropy, metric = metric_categorical_ac .... [TRUNCATED] 
+
+> model %>% fit_generator(generator = train, steps_per_epoch = train$n/train$batch_size, 
++     epochs = 30, callbacks = callback_early_stopping(patie .... [TRUNCATED] 

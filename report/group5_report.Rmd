@@ -55,6 +55,7 @@ library(cloudml)
 library(tfruns)
 library(kerasR)
 library(caret)
+library(here)
 ```
 ## <strong>Introduction</strong>
 The COVID-19 pandemic, with the SARS-CoV-2 virus unknown only 6 months ago, has impacted our lives tremendously. To date, no vaccine or effective treatment has been found. While the "Great Lockdown" is being slowly lifted in Europe and the US, 2 sets of measures seem critical. The first one is basic hygiene gestures to prevent infection from spreading. The second is the capability of detecting and tracing every person who may have been infected and placing her in quarantine. 
@@ -141,14 +142,22 @@ Furthermore, we sample 140 bacterial pneumonia and 140 non-COVID-19 viral pneumo
 
 ```{r, include = F, results = "hide"}
 #load model
+
+generator_test <-
+  image_data_generator(
+    rescale = 1 / 255
+  )
 test <- flow_images_from_directory(
+  #directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/test"),
   directory = here::here("data/final_data/binary/test"),
   target_size = c(224, 224),
   generator = generator_test,
-  batch_size = 16
+  batch_size = 8
 )
 
-vgg16_binary <- load_model_hdf5(here::here("best_models/vgg16_binary/best_first_vgg16_binary.h5"))
+vgg16_binary <- load_model_hdf5(here::here("best_models/vgg16_binary/best_second_vgg16_binary.h5"))
+summary(vgg16_binary)
+
 ```
 
 
@@ -161,17 +170,23 @@ summary(vgg16_binary)
 ```{r, echo = F, fig.align="center"}
 #load model
 
-vgg16_binary %>% evaluate_generator(generator = test,steps = test$n)
+vgg16_binary %>% evaluate_generator(generator = test, steps = test$n / test$batch_size)
 
-predicted <- vgg16_binary %>% predict_generator(generator = test, steps = test$n)
-predicted_tr <- (apply(predicted, MARGIN = 1, which.max) - 1) %>% as.factor()
-observed <- test$classes %>% as.factor()
-caret::confusionMatrix(predicted_tr, observed)
+
+# predicted <- vgg16_binary %>% predict_generator(generator = test, steps = test$batch_size / test$n)
+# predicted_tr <- (apply(predicted, MARGIN = 1, which.max)-1) %>% as.factor()
+# 
+# observed <- test$classes %>% as.factor()
+# caret::confusionMatrix(predicted_tr, observed)
+# 
+# table(predicted_tr, observed)
 ```
 
 ### Binary DenseNet201
 ```{r}
-summary(cars)
+den201_binary <- load_model_hdf5(here::here("best_models/densenet201_binary/best_densenet201_binary050.h5"))
+summary(den201_binary)
+den201_binary %>% evaluate_generator(generator = test, steps = test$n / test$batch_size)
 ```
 
 ### Multiclass VGG16

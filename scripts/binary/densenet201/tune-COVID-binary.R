@@ -57,3 +57,7 @@ compare_runs(runs = c(
 )) # Neither of these runs is good
 
 # CONCLUSION: TAKE THE 3RD RUN with id cloudml_2020_05_20_141743560-050
+
+view_run(here::here(
+  "runs/binary/densenet201/runs/cloudml_2020_05_20_141743560-050"
+))

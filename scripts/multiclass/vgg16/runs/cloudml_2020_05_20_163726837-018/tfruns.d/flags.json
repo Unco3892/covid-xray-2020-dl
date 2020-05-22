@@ -1,9 +1,0 @@
-{
-  "units1": 100,
-  "units2": 100,
-  "lr": 0.001,
-  "dropoutrate": 0,
-  "reg": 0,
-  "optimizer": "optimizer_adamax",
-  "activation": "relu"
-}
