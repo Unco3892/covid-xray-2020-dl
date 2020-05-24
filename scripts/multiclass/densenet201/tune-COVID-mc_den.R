@@ -16,21 +16,21 @@ cloudml_train(
 )
 
 # Setting the path for collecting the files
-setwd(here("runs/multiclass/densenet201"))
+setwd(here::here("runs/multiclass/densenet201"))
 getwd()
 
 # Collecting the final hyperparamter tuning
-job_collect(" cloudml_2020_05_22_210439612", trials = "all")
+job_collect("cloudml_2020_05_22_210439612", trials = "all")
 
 # Show the runs and sort them based on accuracy
-runs_den201 <- ls_runs(runs_dir = here("scripts/multiclass/densenet201/runs")) #it could also be categorical
+runs_den201 <- ls_runs(runs_dir = here("runs/multiclass/densenet201/runs")) #it could also be categorical
 
 
 View(runs_den201)
 
 
 runs_report <-
-  runs %>% filter(cloudml_job == " cloudml_2020_05_21_140541169") %>% select(flag_lr,
+  runs %>% filter(cloudml_job == "cloudml_2020_05_22_210439612") %>% select(flag_lr,
                                                  metric_acc,
                                                  metric_val_acc,
                                                  metric_loss,

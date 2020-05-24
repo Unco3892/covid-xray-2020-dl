@@ -1,0 +1,9 @@
+{
+  "units1": 100,
+  "units2": 50,
+  "lr": 0.001,
+  "dropoutrate": 0.2,
+  "reg": 0.001,
+  "optimizer": "optimizer_rmsprop",
+  "activation": "relu"
+}

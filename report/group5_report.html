@@ -8155,7 +8155,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Deep Learning Project</h1>
 <h4 class="author">Ilia Azizi, Alexandre Schroeter</h4>
-<h4 class="date">21 May, 2020</h4>
+<h4 class="date">24 May, 2020</h4>
 
 </div>
 
@@ -8302,17 +8302,203 @@ Number of tests per thousand <span class="citation">(“Tests Per Thousand Since
 <p>As SARS-CoV-2 is a new virus, most X-rays available come from different sources. At the time being, 5 of them are worth mentionning:</p>
 <p>a.<a href="https://cases.rsna.org/coronavirus/"> The Radiological Society of North America (RSNA)</a> <br> b. <a href=" https://radiopaedia.org/search?utf8=%E2%9C%93&amp;q=covid&amp;scope=all&amp;lang=us/"> Radiopaedia</a><br> c. <a href="https://www.sirm.org/en/category/articles/covid-19-database/">The Italian Society of Medical and Interventional Radiology (SIRM)</a><br> d. <a href="https://www.eurorad.org/"> Eurorad.</a><br> e. <a href="https://coronacases.org/forum/coronacases-org-helping-radiologists-to-help-people-in-more-than-100-countries-1"> Coronacases.org</a></p>
 <p>As most of the data is not centralized, and therefore not always reliable, one of the leading repos on COVID-19 positive (pneumonia) X-rays is <a href="https://github.com/ieee8023/covid-chestxray-dataset" class="uri">https://github.com/ieee8023/covid-chestxray-dataset</a>. Data can be downloaded freely. This repo is approved by the University of Montreal’s Ethics Committee and is being continuously updated. Furthermore, previous studies have already used this repo. We sample 140 pictures of it.</p>
-<p>To find COVID-19 negative pictures, we use another dataset provided by <a href="https://data.mendeley.com/datasets/rscbjbr9sj/3" class="uri">https://data.mendeley.com/datasets/rscbjbr9sj/3</a>. We randomly sample 140 negative X-rays.</p>
-<p>Furthermore, we sample 140 bacterial pneumonia and 140 non-COVID-19 viral pneumonia.</p>
-<p><strong>THE TOTAL SIZE OF THE DATA IS</strong></p>
+<p>To find COVID-19 negative pictures, we use another dataset provided by <a href="https://data.mendeley.com/datasets/rscbjbr9sj/3" class="uri">https://data.mendeley.com/datasets/rscbjbr9sj/3</a>. It is named the <em>Kermany Dataset</em>.</p>
+<p>As the number of images of COVID+ at our disposal if fairly limited, we build a train set, a small test set and a large test set. This will be specified below.</p>
+<p><strong>The total size of the data 1.28GB with 5872 items. </strong></p>
 </div>
 <div id="methodology" class="section level2">
 <h2><strong>Methodology</strong></h2>
 </div>
 <div id="cnn-models" class="section level2 tabset tabset-fade">
 <h2>CNN models</h2>
+<p>2 questions which naturally arise as we conduct our experiments are:</p>
+<ul>
+<li>Can we accurately identify COVID+ individuals from COVID- individuals (binary classification task) ?</li>
+<li>Can we accurately identify COVID+ individuals from COVID- individuals from individuals who have a viral pneumonia other than COVID from individuals who have a bacterial pneumonia (multiclass classification task with 4 outcome classes) ?</li>
+</ul>
+<p>From the literature, we decide to use 2 different models, other than the ones which have been used so far. We decide to use transfer learning for our tasks. We train and test 2 CNN pretrained networks per task and use them as a basis for our model. We then add dense layers on top of them.</p>
+<ul>
+<li><p><strong>VGG16</strong>: this pretrained model built on the ImageNet dataset has a size of 528MB a Top-1 accuracy of 0.713. It is 23-layer deep and has 138 Mio parameters making it a very large model.</p></li>
+<li><p><strong>DenseNet201</strong>: this pretrained model built on the ImageNet dataset has a size of 80MB a Top-1 accuracy of 0.773. It is 201-layer deep and has 20 Mio parameters.</p></li>
+</ul>
+<p>Both models are thus very different in size and in depth.</p>
+<p>    <strong>Binary classification</strong>  </p>
+<p>We use the 140 COVID+ images as well as 140 COVID- images, so 280 images in total. We use 80% (224 images) of these as a training set and 20% (56 images) as a testing set. 50% of the training set will build the validation set. We tune our models on Google Cloud.   To challenge our model, we also build a larger test set made of 29 COVID+ and 1573 COVID- images</p>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-i7a5{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;text-align:left;vertical-align:top}
+.tg .tg-5x9q{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;font-weight:bold;text-align:left;vertical-align:top}
+.tg .tg-3zvv{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;text-align:center;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+<tr>
+<th class="tg-i7a5" ; width="20%"></th>
+<th class="tg-5x9q" ; width="15%">COVID+</th>
+<th class="tg-5x9q" ; width="15%">COVID-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tg-i7a5">
+Train set
+</td>
+<td class="tg-3zvv">
+140
+</td>
+<td class="tg-3zvv">
+140
+</td>
+</tr>
+<tr>
+<td class="tg-i7a5">
+Small test set
+</td>
+<td class="tg-3zvv">
+28
+</td>
+<td class="tg-3zvv">
+28
+</td>
+</tr>
+<tr>
+<td class="tg-i7a5">
+Large test set
+</td>
+<td class="tg-3zvv">
+28
+</td>
+<td class="tg-3zvv">
+1572
+</td>
+</tr>
+</tbody>
+</table>
+<p>    <strong>Multiclass classification</strong></p>
+<p>Again, we build one training set and two testing sets; a small one and a large one. The table below indicates how many images were used per class and per set.</p>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-i7a5{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;text-align:left;vertical-align:top}
+.tg .tg-5x9q{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;font-weight:bold;text-align:left;vertical-align:top}
+.tg .tg-3zvv{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;text-align:center;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+<tr>
+<th class="tg-i7a5" ; width="10%"></th>
+<th class="tg-5x9q" ; width="10%">COVID+</th>
+<th class="tg-5x9q" ; width="10%">COVID-</th>
+<th class="tg-5x9q" ; width="10%">Viral Pneumonia</th>
+<th class="tg-5x9q" ; width="10%">Bacterial Pneumonia</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tg-i7a5">
+Train set
+</td>
+<td class="tg-3zvv">
+112
+</td>
+<td class="tg-3zvv">
+112
+</td>
+<td class="tg-3zvv">
+112
+</td>
+<td class="tg-3zvv">
+112
+</td>
+</tr>
+<tr>
+<td class="tg-i7a5">
+Small test set
+</td>
+<td class="tg-3zvv">
+28
+</td>
+<td class="tg-3zvv">
+28
+</td>
+<td class="tg-3zvv">
+28
+</td>
+<td class="tg-3zvv">
+28
+</td>
+</tr>
+<tr>
+<td class="tg-i7a5">
+Large test set
+</td>
+<td class="tg-3zvv">
+28
+</td>
+<td class="tg-3zvv">
+1583
+</td>
+<td class="tg-3zvv">
+1494
+</td>
+<td class="tg-3zvv">
+2788
+</td>
+</tr>
+</tbody>
+</table>
+<p>   </p>
 <div id="binary-vgg16" class="section level3">
 <h3>Binary VGG16</h3>
+<p>On top of the VGG16 base, we add 2 hidden layers with 100 and 50 nodes respectively. Each layer uses a SeLU activation function. Our final layer is made of 2 nodes with a softmax activation function. We use a dropout rate of 0.2 and a <span class="math inline">\(l_1\)</span> regularization penalty of 0.001. Our optimizer is Adamax with a learning rate of 0.001.</p>
+<p>We train this model for 30 epochs and we use early stopping with patience = 7.  </p>
+<p> </p>
+<pre><code>## Model: &quot;sequential_1&quot;
+## ________________________________________________________________________________
+## Layer (type)                        Output Shape                    Param #     
+## ================================================================================
+## vgg16 (Model)                       (None, 7, 7, 512)               14714688    
+## ________________________________________________________________________________
+## flatten_1 (Flatten)                 (None, 25088)                   0           
+## ________________________________________________________________________________
+## dense_3 (Dense)                     (None, 100)                     2508900     
+## ________________________________________________________________________________
+## dense_4 (Dense)                     (None, 50)                      5050        
+## ________________________________________________________________________________
+## dropout_1 (Dropout)                 (None, 50)                      0           
+## ________________________________________________________________________________
+## dense_5 (Dense)                     (None, 2)                       102         
+## ================================================================================
+## Total params: 17,228,740
+## Trainable params: 2,514,052
+## Non-trainable params: 14,714,688
+## ________________________________________________________________________________</code></pre>
+<p>  <strong>Small test set</strong></p>
+<pre><code>## $loss
+## [1] 1.222313
+## 
+## $categorical_accuracy
+## [1] 0.9642857</code></pre>
+<p>Based on our small test set, we can predict COVID patients in more than 0.9643 of the cases. <strong>Large test set</strong></p>
+<pre><code>## $loss
+## [1] 1.176843
+## 
+## $categorical_accuracy
+## [1] 0.996875</code></pre>
+<p>When we test our model on the large dataset, the accuracy increases to more than 0.9969.</p>
+<p> </p>
+</div>
+<div id="binary-densenet201" class="section level3">
+<h3>Binary DenseNet201</h3>
+<p>On top of the DenseNet201 base, we add 2 hidden layers with 100 and 100 nodes respectively. Each layer uses a ReLU activation function. Our final layer is made of 2 nodes with a softmax activation function. We use a dropout rate of 0.2 and no <span class="math inline">\(l_1\)</span> regularization penalty. Our optimizer is adamax with a learning rate of 0.001.</p>
+<p>We train this model for 30 epochs and we use early stopping with patience = 7.</p>
 <pre><code>## Model: &quot;sequential&quot;
 ## ________________________________________________________________________________
 ## Layer (type)                        Output Shape                    Param #     
@@ -8333,40 +8519,65 @@ Number of tests per thousand <span class="citation">(“Tests Per Thousand Since
 ## Trainable params: 2,519,202
 ## Non-trainable params: 14,714,688
 ## ________________________________________________________________________________</code></pre>
-</div>
-<div id="binary-densenet201" class="section level3">
-<h3>Binary DenseNet201</h3>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
+<p>  <strong>Small test set</strong></p>
+<pre><code>## $loss
+## [1] 0.004260866
+## 
+## $categorical_accuracy
+## [1] 1</code></pre>
+<p>Based on our small test set, we can predict COVID patients in 1 of the cases.   <strong>Large test set</strong></p>
+<pre><code>## $loss
+## [1] 0.06076107
+## 
+## $categorical_accuracy
+## [1] 0.97875</code></pre>
+<p>When we test our model on the large dataset, the accuracy decreases to slightly below 0.9787.  </p>
 </div>
 <div id="multiclass-vgg16" class="section level3">
 <h3>Multiclass VGG16</h3>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
+<p>On top of the VGG16 base, we add 2 hidden layers with 100 and 50 nodes respectively. Each layer uses a ReLU activation function. Our final layer is made of 4 nodes with a softmax activation function. We use neither a dropout rate nor a <span class="math inline">\(l_1\)</span> regularization penalty. Our optimizer is RMSprop with a learning rate of 0.0001.</p>
+<p>We train this model for 30 epochs and we use early stopping with patience = 7.</p>
+<pre><code>## Model: &quot;sequential_1&quot;
+## ________________________________________________________________________________
+## Layer (type)                        Output Shape                    Param #     
+## ================================================================================
+## vgg16 (Model)                       (None, 7, 7, 512)               14714688    
+## ________________________________________________________________________________
+## flatten_1 (Flatten)                 (None, 25088)                   0           
+## ________________________________________________________________________________
+## dense_3 (Dense)                     (None, 100)                     2508900     
+## ________________________________________________________________________________
+## dense_4 (Dense)                     (None, 50)                      5050        
+## ________________________________________________________________________________
+## dropout_1 (Dropout)                 (None, 50)                      0           
+## ________________________________________________________________________________
+## dense_5 (Dense)                     (None, 4)                       204         
+## ================================================================================
+## Total params: 17,228,842
+## Trainable params: 2,514,154
+## Non-trainable params: 14,714,688
+## ________________________________________________________________________________</code></pre>
+<p>  <strong>Small test set</strong></p>
+<pre><code>## $loss
+## [1] 0.4015184
+## 
+## $categorical_accuracy
+## [1] 0.8482143</code></pre>
+<p>Based on our small test set, we can predict COVID patients in 0.8482 of the cases.   <strong>Large test set</strong></p>
+<pre><code>## $loss
+## [1] 0.6004617
+## 
+## $categorical_accuracy
+## [1] 0.7505095</code></pre>
+<p>When we test our model on the large dataset, the accuracy decreases to slightly above 0.7505.</p>
 </div>
 <div id="multiclass-densenet201" class="section level3">
 <h3>Multiclass DenseNet201</h3>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
+<p>We discard this model because the accuracy of the best model after tuning is less than 60%.</p>
 </div>
+</div>
+<div id="section" class="section level2 unnumbered">
+<h2></h2>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2><strong>References</strong></h2>

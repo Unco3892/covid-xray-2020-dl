@@ -126,20 +126,138 @@ e. <a href="https://coronacases.org/forum/coronacases-org-helping-radiologists-t
 As most of the data is not centralized, and therefore not always reliable, one of the leading repos on COVID-19 positive (pneumonia) X-rays is https://github.com/ieee8023/covid-chestxray-dataset. Data can be downloaded freely. 
 This repo is approved by the University of Montreal's Ethics Committee and is being continuously updated. Furthermore, previous studies have already used this repo. We sample 140 pictures of it. 
 
-To find COVID-19 negative pictures, we use another dataset provided by https://data.mendeley.com/datasets/rscbjbr9sj/3. We randomly sample 140 negative X-rays. 
+To find COVID-19 negative pictures, we use another dataset provided by https://data.mendeley.com/datasets/rscbjbr9sj/3. It is named the *Kermany Dataset*. 
 
-Furthermore, we sample 140 bacterial pneumonia and 140 non-COVID-19 viral pneumonia. 
+As the number of images of COVID+ at our disposal if fairly limited, we build a train set, a small test set and a large test set. This will be specified below. 
 
-
-**THE TOTAL SIZE OF THE DATA IS**
+**The total size of the data 1.28GB with 5872 items. **
 
 
 ## <strong>Methodology</strong>
 
 ## CNN models{.tabset .tabset-fade}
+2 questions which naturally arise as we conduct our experiments are: 
+
+* Can we accurately identify COVID+ individuals from COVID- individuals (binary classification task) ? 
+* Can we accurately identify COVID+ individuals from COVID- individuals from individuals who have a viral pneumonia other than COVID from individuals who have a bacterial pneumonia (multiclass classification task with 4 outcome classes) ?
+
+From the literature, we decide to use 2 different models, other than the ones which have been used so far. We decide to use transfer learning for our tasks. We train and test 2 CNN pretrained networks per task and use them as a basis for our model. We then add dense layers on top of them. 
+
+* **VGG16**: this pretrained model built on the ImageNet dataset has a size of 528MB a Top-1 accuracy of 0.713. It is 23-layer deep and has 138 Mio parameters making it a very large model.
+
+
+* **DenseNet201**: this pretrained model built on the ImageNet dataset has a size of 80MB a Top-1 accuracy of 0.773. It is 201-layer deep and has 20 Mio parameters. 
+
+Both models are thus very different in size and in depth. 
+
+&nbsp;
+&nbsp;
+**Binary classification**
+&nbsp;
+
+We use the 140 COVID+ images as well as 140 COVID- images, so 280 images in total. We use 80% (224 images) of these as a training set and 20% (56 images) as a testing set. 50% of the training set will build the validation set. We tune our models on Google Cloud. 
+&nbsp;
+To challenge our model, we also build a larger test set made of 29 COVID+ and 1573 COVID- images
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-i7a5{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;text-align:left;vertical-align:top}
+.tg .tg-5x9q{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;font-weight:bold;text-align:left;vertical-align:top}
+.tg .tg-3zvv{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;text-align:center;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-i7a5"; width = 20%></th>
+    <th class="tg-5x9q"; width = 15%>COVID+</th>
+    <th class="tg-5x9q"; width = 15%>COVID-</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-i7a5">Train set</td>
+    <td class="tg-3zvv">140</td>
+    <td class="tg-3zvv">140</td>
+  </tr>
+  <tr>
+    <td class="tg-i7a5">Small test set</td>
+    <td class="tg-3zvv">28</td>
+    <td class="tg-3zvv">28</td>
+  </tr>
+  <tr>
+    <td class="tg-i7a5">Large test set</td>
+    <td class="tg-3zvv">28</td>
+    <td class="tg-3zvv">1572</td>
+  </tr>
+</tbody>
+</table>
+
+&nbsp;
+&nbsp;
+**Multiclass classification**
+
+Again, we build one training set and two testing sets; a small one and a large one. The table below indicates how many images were used per class and per set. 
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-i7a5{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;text-align:left;vertical-align:top}
+.tg .tg-5x9q{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;font-weight:bold;text-align:left;vertical-align:top}
+.tg .tg-3zvv{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;text-align:center;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-i7a5"; width = 10%></th>
+    <th class="tg-5x9q"; width = 10%>COVID+</th>
+    <th class="tg-5x9q"; width = 10%>COVID-</th>
+    <th class="tg-5x9q"; width = 10%>Viral Pneumonia</th>
+    <th class="tg-5x9q"; width = 10%>Bacterial Pneumonia</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-i7a5">Train set</td>
+    <td class="tg-3zvv">112</td>
+    <td class="tg-3zvv">112</td>
+    <td class="tg-3zvv">112</td>
+    <td class="tg-3zvv">112</td>
+  </tr>
+  <tr>
+    <td class="tg-i7a5">Small test set</td>
+    <td class="tg-3zvv">28</td>
+    <td class="tg-3zvv">28</td>
+    <td class="tg-3zvv">28</td>
+    <td class="tg-3zvv">28</td>
+  </tr>
+  <tr>
+    <td class="tg-i7a5">Large test set</td>
+    <td class="tg-3zvv">28</td>
+    <td class="tg-3zvv">1583</td>
+    <td class="tg-3zvv">1494</td>
+    <td class="tg-3zvv">2788</td>
+  </tr>
+</tbody>
+</table>
+
+&nbsp;
+&nbsp;
+
+
 
 ### Binary VGG16
+On top of the VGG16 base, we add 2 hidden layers with 100 and 50 nodes respectively. Each layer uses a SeLU activation function. Our final layer is made of 2 nodes with a softmax activation function. 
+We use a dropout rate of 0.2 and a $l_1$ regularization penalty of 0.001. Our optimizer is Adamax with a learning rate of 0.001. 
 
+We train this model for 30 epochs and we use early stopping with patience = 7. 
+&nbsp;
 ```{r, include = F, results = "hide"}
 #load model
 
@@ -147,7 +265,7 @@ generator_test <-
   image_data_generator(
     rescale = 1 / 255
   )
-test <- flow_images_from_directory(
+test_binary <- flow_images_from_directory(
   #directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/test"),
   directory = here::here("data/final_data/binary/test"),
   target_size = c(224, 224),
@@ -155,9 +273,36 @@ test <- flow_images_from_directory(
   batch_size = 8
 )
 
+large_test_binary <- flow_images_from_directory(
+  #directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/test"),
+  directory = here::here("data/binary_large_test"),
+  target_size = c(224, 224),
+  generator = generator_test,
+  batch_size = 8
+)
+
+
+test_mc <- flow_images_from_directory(
+  #directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/test"),
+  directory = here::here("data/final_data/multiclass/test"),
+  target_size = c(224, 224),
+  generator = generator_test,
+  batch_size = 8
+)
+
+large_test_mc <- flow_images_from_directory(
+  #directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/test"),
+  directory = here::here("data/multiclass_large_test"),
+  target_size = c(224, 224),
+  generator = generator_test,
+  batch_size = 8
+)
+
+
+```
+&nbsp;
+```{r, echo = F, fig.align="center"}
 vgg16_binary <- load_model_hdf5(here::here("best_models/vgg16_binary/best_second_vgg16_binary.h5"))
-summary(vgg16_binary)
-
 ```
 
 
@@ -165,12 +310,14 @@ summary(vgg16_binary)
 #load model
 summary(vgg16_binary)
 ```
-
-
+&nbsp;
+**Small test set**
 ```{r, echo = F, fig.align="center"}
 #load model
 
-vgg16_binary %>% evaluate_generator(generator = test, steps = test$n / test$batch_size)
+b16s <- vgg16_binary %>% evaluate_generator(generator = test_binary, steps = test_binary$n / test_binary$batch_size)
+
+print(b16s)
 
 
 # predicted <- vgg16_binary %>% predict_generator(generator = test, steps = test$batch_size / test$n)
@@ -181,22 +328,91 @@ vgg16_binary %>% evaluate_generator(generator = test, steps = test$n / test$batc
 # 
 # table(predicted_tr, observed)
 ```
+Based on our small test set, we can predict COVID patients in more than `r round(b16s$categorical_accuracy,4)` of the cases.
+**Large test set**
+```{r, echo = F, fig.align="center"}
+#load model
+b16l <- vgg16_binary %>% evaluate_generator(generator = large_test_binary, steps = large_test_binary$n / large_test_binary$batch_size)
+
+print(b16l)
+
+
+```
+When we test our model on the large dataset, the accuracy increases to more than `r round(b16l$categorical_accuracy,4)`.  
+
+&nbsp;
 
 ### Binary DenseNet201
-```{r}
+On top of the DenseNet201 base, we add 2 hidden layers with 100 and 100 nodes respectively. Each layer uses a ReLU activation function. Our final layer is made of 2 nodes with a softmax activation function. 
+We use a dropout rate of 0.2 and no $l_1$ regularization penalty. Our optimizer is adamax with a learning rate of 0.001. 
+
+We train this model for 30 epochs and we use early stopping with patience = 7. 
+
+```{r, include = F, results = "hide"}
 den201_binary <- load_model_hdf5(here::here("best_models/densenet201_binary/best_densenet201_binary050.h5"))
-summary(den201_binary)
-den201_binary %>% evaluate_generator(generator = test, steps = test$n / test$batch_size)
 ```
+
+
+```{r, echo = F, fig.align="center"}
+#load model
+summary(den201_binary)
+```
+&nbsp;
+**Small test set**
+```{r, echo = F, fig.align="center"}
+bindens <- den201_binary %>% evaluate_generator(generator = test_binary, steps = test_binary$n / test_binary$batch_size)
+print(bindens)
+```
+Based on our small test set, we can predict COVID patients in `r round(bindens$categorical_accuracy,4)` of the cases. 
+&nbsp;
+**Large test set**
+```{r, echo = F, fig.align="center"}
+bindenl <- den201_binary %>% evaluate_generator(generator = large_test_binary, steps = large_test_binary$n / large_test_binary$batch_size)
+
+print(bindenl)
+```
+When we test our model on the large dataset, the accuracy decreases to slightly below `r round(bindenl$categorical_accuracy,4)`.
+&nbsp;
 
 ### Multiclass VGG16
-```{r}
-summary(cars)
+On top of the VGG16 base, we add 2 hidden layers with 100 and 50 nodes respectively. Each layer uses a ReLU activation function. Our final layer is made of 4 nodes with a softmax activation function. 
+We use neither a dropout rate nor a $l_1$ regularization penalty. Our optimizer is RMSprop with a learning rate of 0.0001. 
+
+We train this model for 30 epochs and we use early stopping with patience = 7. 
+
+```{r, include = F, results = "hide"}
+vgg16_mc <- load_model_hdf5(here::here("best_models/vgg16_mc/best_vgg16_mc.h5"))
 ```
 
-### Multiclass DenseNet201
-```{r}
-summary(cars)
+
+```{r, echo = F, fig.align="center"}
+#load model
+summary(vgg16_mc)
 ```
+&nbsp;
+**Small test set**
+```{r, echo = F, fig.align="center"}
+mc16s <- vgg16_mc %>% evaluate_generator(generator = test_mc, steps = test_mc$n / test_mc$batch_size)
+
+print(mc16s)
+
+```
+Based on our small test set, we can predict COVID patients in `r round(mc16s$categorical_accuracy,4)` of the cases.
+&nbsp;
+**Large test set**
+```{r, echo = F, fig.align="center"}
+mc16l <- vgg16_mc %>% evaluate_generator(generator = large_test_mc, steps = large_test_mc$n / large_test_mc$batch_size)
+
+print(mc16l)
+
+```
+When we test our model on the large dataset, the accuracy decreases to slightly above `r round(mc16l$categorical_accuracy,4)`.
+
+
+### Multiclass DenseNet201
+We discard this model because the accuracy of the best model after tuning is less than 60%. 
+
+## {-}
 ## <strong>References</strong>
+
 
