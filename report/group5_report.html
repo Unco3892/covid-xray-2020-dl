@@ -8155,7 +8155,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Deep Learning Project</h1>
 <h4 class="author">Ilia Azizi, Alexandre Schroeter</h4>
-<h4 class="date">24 May, 2020</h4>
+<h4 class="date">25 May, 2020</h4>
 
 </div>
 
@@ -8192,6 +8192,7 @@ table th:nth-of-type(4) {
 table th:nth-of-type(5) {
     width: 20%;
 }
+
 </style>
 <div id="introduction" class="section level2">
 <h2><strong>Introduction</strong></h2>
@@ -8304,7 +8305,7 @@ Number of tests per thousand <span class="citation">(“Tests Per Thousand Since
 <p>As most of the data is not centralized, and therefore not always reliable, one of the leading repos on COVID-19 positive (pneumonia) X-rays is <a href="https://github.com/ieee8023/covid-chestxray-dataset" class="uri">https://github.com/ieee8023/covid-chestxray-dataset</a>. Data can be downloaded freely. This repo is approved by the University of Montreal’s Ethics Committee and is being continuously updated. Furthermore, previous studies have already used this repo. We sample 140 pictures of it.</p>
 <p>To find COVID-19 negative pictures, we use another dataset provided by <a href="https://data.mendeley.com/datasets/rscbjbr9sj/3" class="uri">https://data.mendeley.com/datasets/rscbjbr9sj/3</a>. It is named the <em>Kermany Dataset</em>.</p>
 <p>As the number of images of COVID+ at our disposal if fairly limited, we build a train set, a small test set and a large test set. This will be specified below.</p>
-<p><strong>The total size of the data 1.28GB with 5872 items. </strong></p>
+<p><strong>The total size of the data 1.28GB with 5893 items. </strong></p>
 </div>
 <div id="methodology" class="section level2">
 <h2><strong>Methodology</strong></h2>
@@ -8322,8 +8323,13 @@ Number of tests per thousand <span class="citation">(“Tests Per Thousand Since
 <li><p><strong>DenseNet201</strong>: this pretrained model built on the ImageNet dataset has a size of 80MB a Top-1 accuracy of 0.773. It is 201-layer deep and has 20 Mio parameters.</p></li>
 </ul>
 <p>Both models are thus very different in size and in depth.</p>
-<p>    <strong>Binary classification</strong>  </p>
+<p>     </p>
+<p>We select our best models based on the categorical accuracy as a first metric and the validation loss if there is a tie in categorical accuracy.</p>
+<p><strong>Binary classification</strong>  </p>
 <p>We use the 140 COVID+ images as well as 140 COVID- images, so 280 images in total. We use 80% (224 images) of these as a training set and 20% (56 images) as a testing set. 50% of the training set will build the validation set. We tune our models on Google Cloud.   To challenge our model, we also build a larger test set made of 29 COVID+ and 1573 COVID- images</p>
+<center>
+<html>
+<body>
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
@@ -8334,7 +8340,7 @@ Number of tests per thousand <span class="citation">(“Tests Per Thousand Since
 .tg .tg-5x9q{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;font-weight:bold;text-align:left;vertical-align:top}
 .tg .tg-3zvv{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;text-align:center;vertical-align:top}
 </style>
-<table class="tg">
+<table class="tg" width="50%">
 <thead>
 <tr>
 <th class="tg-i7a5" ; width="20%"></th>
@@ -8378,8 +8384,13 @@ Large test set
 </tr>
 </tbody>
 </table>
-<p>    <strong>Multiclass classification</strong></p>
+</body>
+</html>
+</center>
+<p>     </p>
+<p><strong>Multiclass classification</strong></p>
 <p>Again, we build one training set and two testing sets; a small one and a large one. The table below indicates how many images were used per class and per set.</p>
+<center>
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
@@ -8390,10 +8401,10 @@ Large test set
 .tg .tg-5x9q{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;font-weight:bold;text-align:left;vertical-align:top}
 .tg .tg-3zvv{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;text-align:center;vertical-align:top}
 </style>
-<table class="tg">
+<table class="tg" width="80%">
 <thead>
 <tr>
-<th class="tg-i7a5" ; width="10%"></th>
+<th class="tg-i7a5" ; width="20%"></th>
 <th class="tg-5x9q" ; width="10%">COVID+</th>
 <th class="tg-5x9q" ; width="10%">COVID-</th>
 <th class="tg-5x9q" ; width="10%">Viral Pneumonia</th>
@@ -8454,10 +8465,20 @@ Large test set
 </tr>
 </tbody>
 </table>
+</center>
 <p>   </p>
 <div id="binary-vgg16" class="section level3">
 <h3>Binary VGG16</h3>
-<p>On top of the VGG16 base, we add 2 hidden layers with 100 and 50 nodes respectively. Each layer uses a SeLU activation function. Our final layer is made of 2 nodes with a softmax activation function. We use a dropout rate of 0.2 and a <span class="math inline">\(l_1\)</span> regularization penalty of 0.001. Our optimizer is Adamax with a learning rate of 0.001.</p>
+<p>Structure of the model :</p>
+<ul>
+<li>VGG16 base</li>
+<li>2 hidden layers with 100 and 50 nodes respectively</li>
+<li>Final layer with 2 nodes and the softmax activation function</li>
+<li>SeLU activation function in each hidden layer</li>
+<li>Dropout rate of 0.2</li>
+<li><span class="math inline">\(l_1\)</span> regularization penalty of 0.001</li>
+<li>Adamax optimizer with a learning rate of 0.001</li>
+</ul>
 <p>We train this model for 30 epochs and we use early stopping with patience = 7.  </p>
 <p> </p>
 <pre><code>## Model: &quot;sequential_1&quot;
@@ -8480,24 +8501,35 @@ Large test set
 ## Trainable params: 2,514,052
 ## Non-trainable params: 14,714,688
 ## ________________________________________________________________________________</code></pre>
-<p>  <strong>Small test set</strong></p>
+<p>   </p>
+<p><strong>Small test set</strong></p>
 <pre><code>## $loss
 ## [1] 1.222313
 ## 
 ## $categorical_accuracy
 ## [1] 0.9642857</code></pre>
-<p>Based on our small test set, we can predict COVID patients in more than 0.9643 of the cases. <strong>Large test set</strong></p>
+<p>Based on our small test set, we can predict COVID patients in 96% of the cases.        </p>
+<p><strong>Large test set</strong></p>
 <pre><code>## $loss
 ## [1] 1.176843
 ## 
 ## $categorical_accuracy
 ## [1] 0.996875</code></pre>
-<p>When we test our model on the large dataset, the accuracy increases to more than 0.9969.</p>
+<p>When we test our model on the large dataset, the accuracy reaches 100%.</p>
 <p> </p>
 </div>
 <div id="binary-densenet201" class="section level3">
 <h3>Binary DenseNet201</h3>
-<p>On top of the DenseNet201 base, we add 2 hidden layers with 100 and 100 nodes respectively. Each layer uses a ReLU activation function. Our final layer is made of 2 nodes with a softmax activation function. We use a dropout rate of 0.2 and no <span class="math inline">\(l_1\)</span> regularization penalty. Our optimizer is adamax with a learning rate of 0.001.</p>
+<p>Structure of the model :</p>
+<ul>
+<li>DenseNet201 base</li>
+<li>2 hidden layers with 100 and 100 nodes respectively</li>
+<li>Final layer with 2 nodes and the softmax activation function</li>
+<li>ReLU activation function in each hidden layer</li>
+<li>Dropout rate of 0.2</li>
+<li>No <span class="math inline">\(l_1\)</span> regularization penalty</li>
+<li>Adamax optimizer with a learning rate of 0.001</li>
+</ul>
 <p>We train this model for 30 epochs and we use early stopping with patience = 7.</p>
 <pre><code>## Model: &quot;sequential&quot;
 ## ________________________________________________________________________________
@@ -8519,23 +8551,34 @@ Large test set
 ## Trainable params: 2,519,202
 ## Non-trainable params: 14,714,688
 ## ________________________________________________________________________________</code></pre>
-<p>  <strong>Small test set</strong></p>
+<p>   </p>
+<p><strong>Small test set</strong></p>
 <pre><code>## $loss
 ## [1] 0.004260866
 ## 
 ## $categorical_accuracy
 ## [1] 1</code></pre>
-<p>Based on our small test set, we can predict COVID patients in 1 of the cases.   <strong>Large test set</strong></p>
+<p>Based on our small test set, we can predict COVID patients in 100% of the cases.        </p>
+<p><strong>Large test set</strong></p>
 <pre><code>## $loss
 ## [1] 0.06076107
 ## 
 ## $categorical_accuracy
 ## [1] 0.97875</code></pre>
-<p>When we test our model on the large dataset, the accuracy decreases to slightly below 0.9787.  </p>
+<p>When we test our model on the large dataset, the accuracy reaches 96%.  </p>
 </div>
 <div id="multiclass-vgg16" class="section level3">
 <h3>Multiclass VGG16</h3>
-<p>On top of the VGG16 base, we add 2 hidden layers with 100 and 50 nodes respectively. Each layer uses a ReLU activation function. Our final layer is made of 4 nodes with a softmax activation function. We use neither a dropout rate nor a <span class="math inline">\(l_1\)</span> regularization penalty. Our optimizer is RMSprop with a learning rate of 0.0001.</p>
+<p>Structure of the model :</p>
+<ul>
+<li>VGG16 base</li>
+<li>2 hidden layers with 100 and 50 nodes respectively</li>
+<li>Final layer with 4 nodes and the softmax activation function</li>
+<li>ReLU activation function in each hidden layer</li>
+<li>No dropout rate</li>
+<li>No <span class="math inline">\(l_1\)</span> regularization penalty</li>
+<li>RMSprop optimizer with a learning rate of 0.0001</li>
+</ul>
 <p>We train this model for 30 epochs and we use early stopping with patience = 7.</p>
 <pre><code>## Model: &quot;sequential_1&quot;
 ## ________________________________________________________________________________
@@ -8557,19 +8600,21 @@ Large test set
 ## Trainable params: 2,514,154
 ## Non-trainable params: 14,714,688
 ## ________________________________________________________________________________</code></pre>
-<p>  <strong>Small test set</strong></p>
+<p>   </p>
+<p><strong>Small test set</strong></p>
 <pre><code>## $loss
 ## [1] 0.4015184
 ## 
 ## $categorical_accuracy
 ## [1] 0.8482143</code></pre>
-<p>Based on our small test set, we can predict COVID patients in 0.8482 of the cases.   <strong>Large test set</strong></p>
+<p>Based on our small test set, we can predict COVID patients in 84% of the cases.        </p>
+<p><strong>Large test set</strong></p>
 <pre><code>## $loss
-## [1] 0.6004617
+## [1] 0.6005197
 ## 
 ## $categorical_accuracy
-## [1] 0.7505095</code></pre>
-<p>When we test our model on the large dataset, the accuracy decreases to slightly above 0.7505.</p>
+## [1] 0.7503397</code></pre>
+<p>When we test our model on the large dataset, the accuracy reaches 76%.</p>
 </div>
 <div id="multiclass-densenet201" class="section level3">
 <h3>Multiclass DenseNet201</h3>
@@ -8578,6 +8623,13 @@ Large test set
 </div>
 <div id="section" class="section level2 unnumbered">
 <h2></h2>
+</div>
+<div id="limitations-improvements" class="section level2">
+<h2>Limitations / Improvements</h2>
+<p>Based on our two analyses, we think that further improvements could be made. First, X-rays of healthy patients are in fact images of children because we did not find reliable data of adults. This is one of the main limitations of our project. Did the model learn to correctly identify features specific to COVID infection or did it learn to distinguish between adults and children ? The most likely answer is that our model is sensitive to specific features of COVID+ patients. Still, it would be good to have access to healthy adults data to check if this is truly the case.</p>
+<p>Another improvement which could be made is access to more COVID+ images. At the time being, too few images are freely accessible. This issue is not specific to our project because researchers used at most 224 images of infected patients.</p>
+<p>If we had been able to compute the confusion matrix, then we could have further elaborated on sensitivity and specificity. This is even more important in an epidemiological context. Even if we used the validation categorical accuracy and the validation loss as our first and second metrics, the most important criterion besides these is sensitivity. False negatives are much more costly because this would mean undetecting infected people.</p>
+<p>So the next steps would be to collect images of healthy adults, to have more COVID chest X-rays and to use the sensitivity as a metric to improve how efficient our model can be.</p>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2><strong>References</strong></h2>

@@ -47,6 +47,7 @@ table th:nth-of-type(4) {
 table th:nth-of-type(5) {
     width: 20%;
 }
+
 </style>
 
 ```{r, include = F}
@@ -56,6 +57,7 @@ library(tfruns)
 library(kerasR)
 library(caret)
 library(here)
+library(scales)
 ```
 ## <strong>Introduction</strong>
 The COVID-19 pandemic, with the SARS-CoV-2 virus unknown only 6 months ago, has impacted our lives tremendously. To date, no vaccine or effective treatment has been found. While the "Great Lockdown" is being slowly lifted in Europe and the US, 2 sets of measures seem critical. The first one is basic hygiene gestures to prevent infection from spreading. The second is the capability of detecting and tracing every person who may have been infected and placing her in quarantine. 
@@ -130,7 +132,7 @@ To find COVID-19 negative pictures, we use another dataset provided by https://d
 
 As the number of images of COVID+ at our disposal if fairly limited, we build a train set, a small test set and a large test set. This will be specified below. 
 
-**The total size of the data 1.28GB with 5872 items. **
+**The total size of the data 1.28GB with 5893 items. **
 
 
 ## <strong>Methodology</strong>
@@ -152,6 +154,10 @@ Both models are thus very different in size and in depth.
 
 &nbsp;
 &nbsp;
+&nbsp;
+
+We select our best models based on the categorical accuracy as a first metric and the validation loss if there is a tie in categorical accuracy. 
+
 **Binary classification**
 &nbsp;
 
@@ -159,6 +165,9 @@ We use the 140 COVID+ images as well as 140 COVID- images, so 280 images in tota
 &nbsp;
 To challenge our model, we also build a larger test set made of 29 COVID+ and 1573 COVID- images
 
+<center>
+<html>
+<body >
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
@@ -169,7 +178,7 @@ To challenge our model, we also build a larger test set made of 29 COVID+ and 15
 .tg .tg-5x9q{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;font-weight:bold;text-align:left;vertical-align:top}
 .tg .tg-3zvv{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;text-align:center;vertical-align:top}
 </style>
-<table class="tg">
+<table class="tg" width = 50%>
 <thead>
   <tr>
     <th class="tg-i7a5"; width = 20%></th>
@@ -196,12 +205,19 @@ To challenge our model, we also build a larger test set made of 29 COVID+ and 15
 </tbody>
 </table>
 
+</body>
+</html>
+</center>
+
 &nbsp;
 &nbsp;
+&nbsp;
+
 **Multiclass classification**
 
 Again, we build one training set and two testing sets; a small one and a large one. The table below indicates how many images were used per class and per set. 
 
+<center>
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
@@ -212,10 +228,10 @@ Again, we build one training set and two testing sets; a small one and a large o
 .tg .tg-5x9q{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;font-weight:bold;text-align:left;vertical-align:top}
 .tg .tg-3zvv{font-family:Verdana, Geneva, sans-serif !important;;font-size:14px;text-align:center;vertical-align:top}
 </style>
-<table class="tg">
+<table class="tg" width = 80%>
 <thead>
   <tr>
-    <th class="tg-i7a5"; width = 10%></th>
+    <th class="tg-i7a5"; width = 20%></th>
     <th class="tg-5x9q"; width = 10%>COVID+</th>
     <th class="tg-5x9q"; width = 10%>COVID-</th>
     <th class="tg-5x9q"; width = 10%>Viral Pneumonia</th>
@@ -246,6 +262,7 @@ Again, we build one training set and two testing sets; a small one and a large o
   </tr>
 </tbody>
 </table>
+</center>
 
 &nbsp;
 &nbsp;
@@ -253,8 +270,16 @@ Again, we build one training set and two testing sets; a small one and a large o
 
 
 ### Binary VGG16
-On top of the VGG16 base, we add 2 hidden layers with 100 and 50 nodes respectively. Each layer uses a SeLU activation function. Our final layer is made of 2 nodes with a softmax activation function. 
-We use a dropout rate of 0.2 and a $l_1$ regularization penalty of 0.001. Our optimizer is Adamax with a learning rate of 0.001. 
+Structure of the model :
+
+* VGG16 base
+* 2 hidden layers with 100 and 50 nodes respectively
+* Final layer with 2 nodes and the softmax activation function
+* SeLU activation function in each hidden layer
+* Dropout rate of 0.2
+* $l_1$ regularization penalty of 0.001
+* Adamax optimizer with a learning rate of 0.001
+
 
 We train this model for 30 epochs and we use early stopping with patience = 7. 
 &nbsp;
@@ -311,6 +336,8 @@ vgg16_binary <- load_model_hdf5(here::here("best_models/vgg16_binary/best_second
 summary(vgg16_binary)
 ```
 &nbsp;
+&nbsp;
+
 **Small test set**
 ```{r, echo = F, fig.align="center"}
 #load model
@@ -328,7 +355,12 @@ print(b16s)
 # 
 # table(predicted_tr, observed)
 ```
-Based on our small test set, we can predict COVID patients in more than `r round(b16s$categorical_accuracy,4)` of the cases.
+Based on our small test set, we can predict COVID patients in  `r label_percent(accuracy = 4)(round(b16s$categorical_accuracy,4))` of the cases.
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+
 **Large test set**
 ```{r, echo = F, fig.align="center"}
 #load model
@@ -338,13 +370,20 @@ print(b16l)
 
 
 ```
-When we test our model on the large dataset, the accuracy increases to more than `r round(b16l$categorical_accuracy,4)`.  
+When we test our model on the large dataset, the accuracy reaches `r label_percent(accuracy = 4)(round(b16l$categorical_accuracy,4))`.  
 
 &nbsp;
 
 ### Binary DenseNet201
-On top of the DenseNet201 base, we add 2 hidden layers with 100 and 100 nodes respectively. Each layer uses a ReLU activation function. Our final layer is made of 2 nodes with a softmax activation function. 
-We use a dropout rate of 0.2 and no $l_1$ regularization penalty. Our optimizer is adamax with a learning rate of 0.001. 
+Structure of the model :
+
+* DenseNet201 base
+* 2 hidden layers with 100 and 100 nodes respectively
+* Final layer with 2 nodes and the softmax activation function
+* ReLU activation function in each hidden layer
+* Dropout rate of 0.2
+* No $l_1$ regularization penalty
+* Adamax optimizer with a learning rate of 0.001
 
 We train this model for 30 epochs and we use early stopping with patience = 7. 
 
@@ -358,25 +397,41 @@ den201_binary <- load_model_hdf5(here::here("best_models/densenet201_binary/best
 summary(den201_binary)
 ```
 &nbsp;
+&nbsp;
+
 **Small test set**
 ```{r, echo = F, fig.align="center"}
 bindens <- den201_binary %>% evaluate_generator(generator = test_binary, steps = test_binary$n / test_binary$batch_size)
 print(bindens)
 ```
-Based on our small test set, we can predict COVID patients in `r round(bindens$categorical_accuracy,4)` of the cases. 
+Based on our small test set, we can predict COVID patients in `r label_percent(accuracy = 4)(round(bindens$categorical_accuracy,4))` of the cases. 
 &nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+
+
 **Large test set**
 ```{r, echo = F, fig.align="center"}
 bindenl <- den201_binary %>% evaluate_generator(generator = large_test_binary, steps = large_test_binary$n / large_test_binary$batch_size)
 
 print(bindenl)
 ```
-When we test our model on the large dataset, the accuracy decreases to slightly below `r round(bindenl$categorical_accuracy,4)`.
+When we test our model on the large dataset, the accuracy reaches `r label_percent(accuracy = 4)(round(bindenl$categorical_accuracy,4))`.
 &nbsp;
 
 ### Multiclass VGG16
-On top of the VGG16 base, we add 2 hidden layers with 100 and 50 nodes respectively. Each layer uses a ReLU activation function. Our final layer is made of 4 nodes with a softmax activation function. 
-We use neither a dropout rate nor a $l_1$ regularization penalty. Our optimizer is RMSprop with a learning rate of 0.0001. 
+Structure of the model :
+
+* VGG16 base
+* 2 hidden layers with 100 and 50 nodes respectively
+* Final layer with 4 nodes and the softmax activation function
+* ReLU activation function in each hidden layer
+* No dropout rate
+* No $l_1$ regularization penalty
+* RMSprop optimizer with a learning rate of 0.0001
+
+
 
 We train this model for 30 epochs and we use early stopping with patience = 7. 
 
@@ -390,15 +445,22 @@ vgg16_mc <- load_model_hdf5(here::here("best_models/vgg16_mc/best_vgg16_mc.h5"))
 summary(vgg16_mc)
 ```
 &nbsp;
+&nbsp;
+
 **Small test set**
+
 ```{r, echo = F, fig.align="center"}
 mc16s <- vgg16_mc %>% evaluate_generator(generator = test_mc, steps = test_mc$n / test_mc$batch_size)
 
 print(mc16s)
 
 ```
-Based on our small test set, we can predict COVID patients in `r round(mc16s$categorical_accuracy,4)` of the cases.
+Based on our small test set, we can predict COVID patients in `r label_percent(accuracy = 4)(round(mc16s$categorical_accuracy,4))` of the cases.
 &nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+
 **Large test set**
 ```{r, echo = F, fig.align="center"}
 mc16l <- vgg16_mc %>% evaluate_generator(generator = large_test_mc, steps = large_test_mc$n / large_test_mc$batch_size)
@@ -406,13 +468,24 @@ mc16l <- vgg16_mc %>% evaluate_generator(generator = large_test_mc, steps = larg
 print(mc16l)
 
 ```
-When we test our model on the large dataset, the accuracy decreases to slightly above `r round(mc16l$categorical_accuracy,4)`.
+When we test our model on the large dataset, the accuracy reaches `r label_percent(accuracy = 4)(round(mc16l$categorical_accuracy,4))`.
 
 
 ### Multiclass DenseNet201
 We discard this model because the accuracy of the best model after tuning is less than 60%. 
 
 ## {-}
+
+## Limitations / Improvements
+Based on our two analyses, we think that further improvements could be made. First, X-rays of healthy patients are in fact images of children because we did not find reliable data of adults. This is one of the main limitations of our project. Did the model learn to correctly identify features specific to COVID infection or did it learn to distinguish between adults and children ? The most likely answer is that our model is sensitive to specific features of COVID+ patients. Still, it would be good to have access to healthy adults data to check if this is truly the case. 
+
+Another improvement which could be made is access to more COVID+ images. At the time being, too few images are freely accessible. This issue is not specific to our project because researchers used at most 224 images of infected patients. 
+
+If we had been able to compute the confusion matrix, then we could have further elaborated on sensitivity and specificity. This is even more important in an epidemiological context. Even if we used the validation categorical accuracy and the validation loss as our first and second metrics, the most important criterion besides these is sensitivity. False negatives are much more costly because this would mean undetecting infected people. 
+
+So the next steps would be to collect images of healthy adults, to have more COVID chest X-rays and to use the sensitivity as a metric to improve how efficient our model can be. 
+
+
 ## <strong>References</strong>
 
 
