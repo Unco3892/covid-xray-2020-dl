@@ -3,7 +3,7 @@ library(cloudml)
 library(tfruns)
 library(here)
 
-
+visu
 # ------------------------------------
 generator <-
   image_data_generator(
