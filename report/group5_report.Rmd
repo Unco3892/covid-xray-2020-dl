@@ -298,6 +298,9 @@ test_binary <- flow_images_from_directory(
   batch_size = 8
 )
 
+test_binary$shuffle <- FALSE
+test_binary$batch_size <- test_binary$n
+
 large_test_binary <- flow_images_from_directory(
   #directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/test"),
   directory = here::here("data/binary_large_test"),
@@ -305,6 +308,9 @@ large_test_binary <- flow_images_from_directory(
   generator = generator_test,
   batch_size = 8
 )
+
+large_test_binary$shuffle <- FALSE
+large_test_binary$batch_size <- large_test_binary$n
 
 
 test_mc <- flow_images_from_directory(
@@ -315,6 +321,9 @@ test_mc <- flow_images_from_directory(
   batch_size = 8
 )
 
+test_mc$shuffle <- FALSE
+test_mc$batch_size <- test_mc$n
+
 large_test_mc <- flow_images_from_directory(
   #directory = gs_data_dir_local("gs://covid-pw2/final_data/binary/test"),
   directory = here::here("data/multiclass_large_test"),
@@ -322,6 +331,9 @@ large_test_mc <- flow_images_from_directory(
   generator = generator_test,
   batch_size = 8
 )
+
+large_test_mc$shuffle <- FALSE
+large_test_mc$batch_size <- large_test_mc$n
 
 
 ```
@@ -347,13 +359,11 @@ b16s <- vgg16_binary %>% evaluate_generator(generator = test_binary, steps = tes
 print(b16s)
 
 
-# predicted <- vgg16_binary %>% predict_generator(generator = test, steps = test$batch_size / test$n)
-# predicted_tr <- (apply(predicted, MARGIN = 1, which.max)-1) %>% as.factor()
-# 
-# observed <- test$classes %>% as.factor()
-# caret::confusionMatrix(predicted_tr, observed)
-# 
-# table(predicted_tr, observed)
+predicted <- vgg16_binary %>% predict_generator(generator = test_binary, steps = 1)
+predicted <- (apply(X = predicted, MARGIN = 1, FUN = which.max) - 1) %>% factor(labels = c("COVID+", "COVID-"))
+observed <- test_binary$classes %>% factor(labels = c("COVID+", "COVID-"))
+confusionMatrix(predicted, observed)
+
 ```
 Based on our small test set, we can predict COVID patients in  `r label_percent(accuracy = 4)(round(b16s$categorical_accuracy,4))` of the cases.
 &nbsp;
@@ -368,7 +378,12 @@ b16l <- vgg16_binary %>% evaluate_generator(generator = large_test_binary, steps
 
 print(b16l)
 
+predicted <- vgg16_binary %>% predict_generator(generator = large_test_binary, steps = 1)
+predicted <- (apply(X = predicted, MARGIN = 1, FUN = which.max) - 1) %>% factor(labels = c("COVID+", "COVID-"))
+observed <- large_test_binary$classes %>% factor(labels = c("COVID+", "COVID-"))
+confusionMatrix(predicted, observed)
 
+predicted
 ```
 When we test our model on the large dataset, the accuracy reaches `r label_percent(accuracy = 4)(round(b16l$categorical_accuracy,4))`.  
 
@@ -403,6 +418,11 @@ summary(den201_binary)
 ```{r, echo = F, fig.align="center"}
 bindens <- den201_binary %>% evaluate_generator(generator = test_binary, steps = test_binary$n / test_binary$batch_size)
 print(bindens)
+
+predicted <- den201_binary %>% predict_generator(generator = test_binary, steps = 1)
+predicted <- (apply(X = predicted, MARGIN = 1, FUN = which.max) - 1) %>% factor(labels = c("COVID+", "COVID-"))
+observed <- test_binary$classes %>% factor(labels = c("COVID+", "COVID-"))
+confusionMatrix(predicted, observed)
 ```
 Based on our small test set, we can predict COVID patients in `r label_percent(accuracy = 4)(round(bindens$categorical_accuracy,4))` of the cases. 
 &nbsp;
@@ -416,6 +436,12 @@ Based on our small test set, we can predict COVID patients in `r label_percent(a
 bindenl <- den201_binary %>% evaluate_generator(generator = large_test_binary, steps = large_test_binary$n / large_test_binary$batch_size)
 
 print(bindenl)
+
+predicted <- den201_binary %>% predict_generator(generator = large_test_binary, steps = 1)
+predicted <- (apply(X = predicted, MARGIN = 1, FUN = which.max) - 1) %>% factor(labels = c("COVID+", "COVID-"))
+observed <- large_test_binary$classes %>% factor(labels = c("COVID+", "COVID-"))
+confusionMatrix(predicted, observed)
+
 ```
 When we test our model on the large dataset, the accuracy reaches `r label_percent(accuracy = 4)(round(bindenl$categorical_accuracy,4))`.
 &nbsp;
@@ -453,6 +479,11 @@ summary(vgg16_mc)
 mc16s <- vgg16_mc %>% evaluate_generator(generator = test_mc, steps = test_mc$n / test_mc$batch_size)
 
 print(mc16s)
+
+predicted <- vgg16_mc %>% predict_generator(generator = test_mc, steps = 1)
+predicted <- (apply(X = predicted, MARGIN = 1, FUN = which.max) - 1) %>% factor(labels = c("COVID+", "COVID-", "Viral P.", "Bacterial P."))
+observed <- test_binary$classes %>% factor(labels = c("COVID+", "COVID-", "Viral P.", "Bacterial P."))
+confusionMatrix(predicted, observed)
 
 ```
 Based on our small test set, we can predict COVID patients in `r label_percent(accuracy = 4)(round(mc16s$categorical_accuracy,4))` of the cases.
