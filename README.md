@@ -44,7 +44,11 @@ All the data used for this project has been placed on this [drive](https://drive
 &nbsp;
 &nbsp;
 
-In the subfolder "data/final_data", you can find the cleaned and pre-processed dataset which has been used for training the models as well as the small test set. Furthermore, the data that was extracted from the sources are found in a folder "data/kermany_OTHERS" which consists of chest-x-ray scans of patients from 2018  who were health (forming our COVID-), or had viral or bacterial pneumonias. The original source of the data can be found on the [dataset's website](https://data.mendeley.com/datasets/rscbjbr9sj/3). The dataset that form the COVD+ photos for the training has been retrieved from the [chest-x-ray repo](https://github.com/ieee8023/covid-chestxray-dataset).
+In the subfolder "data/final_data", you can find the cleaned and pre-processed dataset which has been used for training the models as well as the small test set. Furthermore, the data that was extracted from the sources are found in a folder "data/kermany_OTHERS" which consists of chest-x-ray scans of patients from 2018  who were health (forming our COVID-) or had viral or bacterial types of pneumonia. The source of this dataset can be found on the [dataset's website](https://data.mendeley.com/datasets/rscbjbr9sj/3). </p>
+Regarding the pictures that form the COVD+ photos for the training have been retrieved from [chest-x-ray repo](https://github.com/ieee8023/covid-chestxray-dataset) and has been placed in the subfolder "data/chestxray_COVID". Please do not that the latter folder contains not only x-rays but also CT-scans as retrieved in its original form from the repo. </p>
+A fourth and a fifth folder have been formed which form a larger test set more to evaluate the model on a realistic scale. Please note that the test set of COVID+ is always 28 photos whether testing on a large or small scale.</p>
+Balanced classes of COVID- and both types of pneumonia have been randomly sampled to match the 140 images of COVID+. Furthermore, the script that does this sampling has been placed [here.](https://github.com/deep-class/projg05/blob/master/scripts/import_EDA/photo-organization.R)
 
 ## Structure
+There are four folders 
 
