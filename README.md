@@ -1,8 +1,13 @@
-# Group 5 project: Using Deep Learning to predict COVID-19
-### Authors: Ilia Azizi & Alexandre Schroeter
+# Group 5 project: Using Deep Learning to Identify COVID-19 Patients
+## Authors: Ilia Azizi & Alexandre Schroeter
+## For the [deep learning](https://irudnyts.github.io/deep/) course taught by [Dr.Iegor Rudnytsky](https://irudnyts.github.io)
 Welcome on our repo for the project of Deep Learning where we try to apply deep learning techniques on X-rays images to predict if a patient is COVID+ or not. 
 
-## Dataset
+### Objective
+This report has made focused on a binary classification task to identify healthy individuals from those infected by COVID-19, and also a multi-class classification where the task is to identify COVID19+ from healthy individuals or those infected with a viral and bacterial penumonia.
+
+## Structure
+### Dataset
 All the data used for this project has been placed on this [drive](https://drive.google.com/open?id=128hxYxQ8kVEkSkVGikueiqBxWTmDIW2h). The structure of our datasets are in the following way:
 
 <center>
@@ -49,6 +54,6 @@ Regarding the pictures that form the COVD+ photos for the training have been ret
 A fourth and a fifth folder have been formed which form a larger test set more to evaluate the model on a realistic scale. Please note that the test set of COVID+ is always 28 photos whether testing on a large or small scale.</p>
 Balanced classes of COVID- and both types of pneumonia have been randomly sampled to match the 140 images of COVID+. Furthermore, the script that does this sampling has been placed [here.](https://github.com/deep-class/projg05/blob/master/scripts/import_EDA/photo-organization.R)
 
-## Structure
-There are four folders 
+### Report
+The models were tuned on the ai platform of google cloud and can be found in two subfolders of ["scripts/binary] can be found in two subfolders 
 
