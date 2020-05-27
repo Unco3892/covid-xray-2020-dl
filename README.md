@@ -1,9 +1,9 @@
 # Group 5 project: Using Deep Learning to Identify COVID-19 Patients
 ## Authors: Ilia Azizi & Alexandre Schroeter
 ## Presented to the [deep learning](https://irudnyts.github.io/deep/) course taught by [Dr.Iegor Rudnytsky](https://irudnyts.github.io)
-Welcome on our repo for the project of Deep Learning where we try to apply deep learning techniques on X-rays images to predict if a patient is COVID+ or not. 
+Welcome on our repo for the project of Deep Learning where we try to apply deep learning techniques on X-rays images to predict if a patient has been infected by COVID-19 or not. 
 
-### Objective
+## Objective
 This report has made focused on a binary classification task to identify healthy individuals from those infected by COVID-19, and also a multi-class classification where the task is to identify COVID19+ from healthy individuals or those infected with viral and bacterial pneumonia.
 
 ## Structure
