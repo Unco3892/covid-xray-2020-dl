@@ -526,7 +526,7 @@ To conclude, we would advise considering DenseNet201 for the binary task and VGG
 </p>
 On the other hand, for the multiclass classification, VGG16 performs much better than DenseNet201, to the degree that the latter was disregarded in the multiclass model evaluation. 
 </p>
-To conclude, despite the limitations of our project, we think deep learning has great potential for specific medical applications such as x-rays analysis. This is especially true when the availability of the medical staff is the bottleneck of the process. We have not only learned how to apply a deep learning model but also to take the context of application into account. This model should be reviewed by a medical practitioner and should be complementary to the work of a radiologist and not its replacement. 
+To conclude, despite the limitations of our project, we think deep learning has great potential for specific medical applications such as x-rays analysis. This is especially true when the availability of the medical staff is the bottleneck of the process. We have not only learned how to apply a deep learning model but also to take the context of application into account. This model should be reviewed by a medical practitioner and should be complementary to the work of a radiologist and not its replacement.  
 
 ## <strong>References</strong>
 
