@@ -60,39 +60,39 @@ library(here)
 library(scales)
 ```
 ## <strong>Introduction</strong>
-The COVID-19 pandemic, with the SARS-CoV-2 virus unknown only 6 months ago, has impacted our lives tremendously. To date, no vaccine or effective treatment has been found. While the "Great Lockdown" is being slowly lifted in Europe and the US, 2 sets of measures seem critical. The first one is basic hygiene gestures to prevent infection from spreading. The second is the capability of detecting and tracing every person who may have been infected and placing her in quarantine. 
 
-At the moment, different types of testing take place -@kent_2020. The first one, accounting for a vast majority of tests, is called **polymerise chain reaction (PCR) testing**. It is searching for viral RNA and is only possible when the patient is actively infected. The test is performed using nasopharyngeal swab. This is a very labour intensive procedure, where errors are likely to occur. False negatives can be as high as 30%. 
+The words "COVID-19 pandemic" and "SARS-CoV-2 virus" have become household names over the past 6 months. Despite its recent discovery, the virus has had a tremendous impact on our lives. As of today, no vaccine or effective treatment has been discovered. While the “Great Lockdown” transitions away from many western nations, the battle against the pandemic has not yet rested. Thus far, two sets of measures have been decisive in combatting the virus. The first set of enforced policies impose a burden on the citizens to follow basic hygiene practices henceforth limiting the further spread of the virus. The execution of the second set of measures concerns the governmental bodies, where they are required to effectively detect, diagnose and track every infected citizen. The latter set of policies call for more practical methods of detection, given the constrained resources of the medical systems.
 
-The second category of tests is called **serologic testing**. It does not specifically search for the virus RNA but for antibodies to COVID-19. The test is carried by using a blood sample. Antibodies are produced by the body when an infection with a specific virus takes place. The antibodies are generally produced one or two weeks after infection and are useful to asses who has been in contact with the virus. This kind of test is less useful to detect an infection early and is mainly interesting for epidemiologists to give a clearer picture of the sanitary situation. The result of this test only display who has been infected but it is not possible to determine if and for how long immunity has been acquired for this virus. 
+At the time writing, different types of tests have been executed. The first kind of test which accounts for a vast majority of examinations is called **polymerise chain reaction (PCR) testing**. The method searches for the viral RNA and is only capable of diagnosis when the patient has been actively infected. The test is performed using a nasopharyngeal swab. The aforementioned procedure, which is a very labour intensive one, results in human errors and incorrect diagnosis. False negatives can be as high as 30%.
 
-Other tests are under development, notably a **lateral flow assays** which look for a biological marker in different samples (urine, blood, saliva,...). It works just like a pregnancy test and can be used for in-home testing. Other pharmaceuticals are developing **rapid in-clinic antigen testing**. In this procedure, the analyser device uses cartridges where biological components in each cartridge is used to prove if the patient has SARS-CoV-2 or any of 9 other respiratory dieases. 
+The second category of tests is called **serologic testing**. This kind of test does not specifically search for the virus RNA but the antibodies to COVID-19. The test is carried by using a blood sample. Antibodies are produced by the body when an infection with a specific virus takes place. The antibodies are generally produced one or two weeks after infection and are useful to assess who has been in contact with the virus. This kind of test is less suitable to detect the infection early and are particularly interesting for the epidemiologists who want to build a clearer picture of the general sanitary conditions. The result produced from this test only displays who has been infected, but it does not determine if and for how long immunity has been acquired for this virus.
 
-Depending on the test type and where it is performed, the price can be high. Furthermore, reagents -@heil_2020 are also a key components of most tests and are in short supply. China and the US are producers and exporters of reagents but both countries have been hit by the pandemic. 
+Other tests are under development, notably, lateral flow assays which look for a biological marker in different samples (urine, blood, saliva,etc.). It works just like a pregnancy test and can be used for in-home testing. Other pharmaceuticals are developing **rapid in-clinic antigen testing**. In this procedure, the analyzing device uses cartridges where the biological components in each cartridge are used to prove if the patient has SARS-CoV-2 or any of 9 other respiratory diseases.
 
-All in all, tests are in great demand. 
+Depending on the test type and where it is performed, the prices can be high. Furthermore, reagents (2020) are also key components of most tests and are currently in short supply. China and the US are producers and exporters of reagents but both countries have been hit by the pandemic.
 
-Up to now, only a fraction of the population has been tested, and even if testing every person may be useless, having enough capabilities is central. 
+In short, tests are in great demand.
 
+Up to now, only a fraction of the population has been tested, and even if testing every person may be useless, having have the capabilities to do so is critical.
 
-```{r pressure, echo=FALSE, out.width = '100%', message = F, fig.cap = "Number of tests per thousand -@data_2020"}
+```{r, echo=FALSE, out.width = '100%', message = F, fig.cap = "Number of tests per thousand -@data_2020"}
 library(here)
 knitr::include_graphics(here("images/tests.png"))
 ```
 
 Even small countries like Iceland or Luxembourg have only been able to carry 100 tests per thousand inhabitants. 
 
-SARS-CoV-2 transmission is difficult to trace because symptoms can appear as long as 14 days after exposure to the virus. Most symptomatic people have fever, tiredness and a dry cough among others. People are very susceptible to developing a pneumonia. 
+SARS-CoV-2 transmission is difficult to trace as the symptoms can appear as long as 14 days after exposure to the virus. The most symptomatic people have fever, tiredness and a dry cough, among other things. People are very susceptible to developing pneumonia. 
 
 Another method used to confirm a diagnosis is the use of chest x-rays to detect the virus. 
 
-However, this method also has advantages and drawbacks. First, it can be carried in almost every country becausethe material to conduct the test is ubiquitous. Second, it is less costly than a CT scan or PCR test and most of the time CT scans can only be carried in bigger hospitals. Finally, X-rays can be conducted more safely than the nasal swab method because they do not risk aerosolizing the virus when the test is conducted. 
+However, this method also has both advantages and drawbacks. First, it can be carried in almost every country because the material to conduct the test is ubiquitous. Second, it is less costly than a CT scan or PCR test, and most of the time, CT scans can only be carried at bigger hospitals. Finally, X-rays can be conducted more safely than the nasal swab method as they do not risk aerosolizing the virus when the test is conducted. 
 
-X-rays drawbacks include increased difficulty of detecting asymptomatic cases, no at-home testing and finally the use of a radiologist needed to analyze the pictures.
+The drawbacks of using X-ray scans include the increased difficulty of detecting asymptomatic cases, lack of its remoteness and the availability of a radiologist to analyze and determine the outcome of the X-ray scans.
 
-Still, no method will solve the problem on its own and as explained above, a variety of methods may help overcome the shortage. For example, it could be interesting to use X-rays primarily to determine if one is COVID positive so that PCR tests may be allocated elsewhere, where X-rays cannot be used. 
+No method alone will be perfect to detect the virus and implementation of multiple test techniques at once may be needed. For example, it could be interesting to use X-rays primarily to determine if one is COVID positive so that PCR tests may be allocated elsewhere, where X-rays cannot be used. 
 
-Therefore, having a cheap, fast and reliable method of X-rays analysis is our motivation. -@hemdan2020covidxnet
+Therefore, having a cheap, fast and reliable method such as X-rays is deemed suitable by the authors however this calls for automation of the diagnostic process by analyzing the scans and determining if the disease exists or not -@hemdan2020covidxnet. (_it is not advised to use this technique without the approval of a medical practioner._)
 
 ## <strong>Research question</strong>
 Thus, our research question is 
@@ -111,7 +111,7 @@ Thus, our research question is
 | **Ozturk et al.**-@ozturk2020automated  | Chest X-ray    | 125 COVID-19(+)<br> 500 Pneumonia<br> 500 No-Findings | DarkCovidNet           | 87.02        |
 
 The traditional approach consists of using Convolutional Neural Networks(CNN) to solve this task. 
-Half of the previous approaches use transfer learning for the purpose. VGG_19 and ResNet50 are the pretrained networks of preference. Sethy and Behra use a Support Vector Machine on top of their CNN, at the very end of the dense layers in place of the traditional softmax activation function. 
+Half of the previous approaches use transfer learning for the purpose. VGG_19 and ResNet50 are the pre-trained networks of preference. Sethy and Behra use a Support Vector Machine on top of their CNN, at the very end of the dense layers in place of the traditional softmax activation function. 
 
 The other half of the approaches use customized networks such as the COVIDX-Net or the DarkCovidNet whose architecture is based on the DarkNet model. The DarkNet model is a model available on MATLAB which is 19 layers deep.
 
@@ -125,12 +125,12 @@ c. <a href="https://www.sirm.org/en/category/articles/covid-19-database/">The It
 d. <a href="https://www.eurorad.org/"> Eurorad.</a><br>
 e. <a href="https://coronacases.org/forum/coronacases-org-helping-radiologists-to-help-people-in-more-than-100-countries-1"> Coronacases.org</a>
 
-As most of the data is not centralized, and therefore not always reliable, one of the leading repos on COVID-19 positive (pneumonia) X-rays is https://github.com/ieee8023/covid-chestxray-dataset. Data can be downloaded freely. 
-This repo is approved by the University of Montreal's Ethics Committee and is being continuously updated. Furthermore, previous studies have already used this repo. We sample 140 pictures of it. 
+As most of the data is not centralized, and therefore not always reliable, one of the leading repositories on COVID-19 positive (pneumonia) X-rays is the [covid-chestxray-dataset.](https://github.com/ieee8023/covid-chestxray-dataset) Using this repository, the data can be downloaded freely. 
+This repo is approved by the University of Montreal's Ethics Committee and is being continuously updated. Furthermore, previous studies have already used this repo. We sample 140 pictures of it.This has been placed in our data folder inside a sub-folder labeled *chestxray_COVID*. A small analysis and selection of this dataset can be found in the scripts/import+storage under the *photo-organization* script. Also please note that we have used one angle of chest X-rays from this repo called **anteroposterior(AP)** which is the most frequent class of chest X-ray scans. We have ignored other forms of scans which include but are not limited posteroanterior and lateral scans.
 
-To find COVID-19 negative pictures, we use another dataset provided by https://data.mendeley.com/datasets/rscbjbr9sj/3. It is named the *Kermany Dataset*. 
+To find COVID-19 negative pictures as well as general bacterial and viral pneumonia, we have used another dataset provided by a study done @-Kermany et al. which can be found [here](https://data.mendeley.com/datasets/rscbjbr9sj/3). This has been placed in our data folder inside a sub-folder labeled *Kermany_OTHERS*. This scans have the same AP view as the first dataset.
 
-As the number of images of COVID+ at our disposal if fairly limited, we build a train set, a small test set and a large test set. This will be specified below. 
+As the number of images of COVID+ at our disposal, if fairly limited, we build a train set, a small test set and a large test set. This will be specified below. 
 
 **The total size of the data 1.28GB with 5893 items. **
 
@@ -161,7 +161,7 @@ We select our best models based on the categorical accuracy as a first metric an
 **Binary classification**
 &nbsp;
 
-We use the 140 COVID+ images as well as 140 COVID- images, so 280 images in total. We use 80% (224 images) of these as a training set and 20% (56 images) as a testing set. 50% of the training set will build the validation set. We tune our models on Google Cloud. 
+We use the 140 COVID+ images as well as 140 COVID- images, so 280 images in total. We use 80% (224 images) of these as a training set and 20% (56 images) as a testing set. 50% of the training set will build the validation set. We tune our models on Google Cloud.
 &nbsp;
 To challenge our model, we also build a larger test set made of 29 COVID+ and 1573 COVID- images
 
@@ -189,8 +189,8 @@ To challenge our model, we also build a larger test set made of 29 COVID+ and 15
 <tbody>
   <tr>
     <td class="tg-i7a5">Train set</td>
-    <td class="tg-3zvv">140</td>
-    <td class="tg-3zvv">140</td>
+    <td class="tg-3zvv">112</td>
+    <td class="tg-3zvv">112</td>
   </tr>
   <tr>
     <td class="tg-i7a5">Small test set</td>

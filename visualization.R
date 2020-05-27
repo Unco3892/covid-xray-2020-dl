@@ -1,8 +1,8 @@
 library(keras)
-library(cloudml)
-library(tfruns)
 library(here)
-
+library(magrittr)
+library(tensorflow)
+library(magick) 
 
 # Visualizing the images
 # We take on COVID+ and one COVID- and the same for multiclass classification
