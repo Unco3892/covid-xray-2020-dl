@@ -58,6 +58,10 @@ library(kerasR)
 library(caret)
 library(here)
 library(scales)
+
+knitr::opts_chunk$set(cache = T)
+
+options(digits = 3)
 ```
 ## <strong>Introduction</strong>
 
@@ -126,9 +130,9 @@ d. <a href="https://www.eurorad.org/"> Eurorad.</a><br>
 e. <a href="https://coronacases.org/forum/coronacases-org-helping-radiologists-to-help-people-in-more-than-100-countries-1"> Coronacases.org</a>
 
 As most of the data is not centralized, and therefore not always reliable, one of the leading repositories on COVID-19 positive (pneumonia) X-rays is the [covid-chestxray-dataset.](https://github.com/ieee8023/covid-chestxray-dataset) Using this repository, the data can be downloaded freely. 
-This repo is approved by the University of Montreal's Ethics Committee and is being continuously updated. Furthermore, previous studies have already used this repo. We sample 140 pictures of it.This has been placed in our data folder inside a sub-folder labeled *chestxray_COVID*. A small analysis and selection of this dataset can be found in the scripts/import+storage under the *photo-organization* script. Also please note that we have used one angle of chest X-rays from this repo called **anteroposterior(AP)** which is the most frequent class of chest X-ray scans. We have ignored other forms of scans which include but are not limited posteroanterior and lateral scans.
+This repo is approved by the University of Montreal's Ethics Committee and is being continuously updated. Furthermore, previous studies have already used this repo. We sample 140 pictures of it. This has been placed in our data folder inside a sub-folder labeled *chestxray_COVID*. A small analysis and selection of this dataset can be found in the scripts/import+storage under the *photo-organization* script. Also please note that we have used one angle of chest X-rays from this repo called **anteroposterior(AP)** which is the most frequent class of chest X-ray scans. We have ignored other forms of scans which include but are not limited posteroanterior and lateral scans.
 
-To find COVID-19 negative pictures as well as general bacterial and viral pneumonia, we have used another dataset provided by a study done @-Kermany et al. which can be found [here](https://data.mendeley.com/datasets/rscbjbr9sj/3). This has been placed in our data folder inside a sub-folder labeled *Kermany_OTHERS*. This scans have the same AP view as the first dataset.
+To find COVID-19 negative pictures as well as general bacterial and viral pneumonia, we have used another dataset provided by a study done in -@kermany , which can be found [here](https://data.mendeley.com/datasets/rscbjbr9sj/3). This has been placed in our data folder inside a sub-folder labeled *Kermany_OTHERS*. This scans have the same AP view as the first dataset.
 
 As the number of images of COVID+ at our disposal, if fairly limited, we build a train set, a small test set and a large test set. This will be specified below. 
 
@@ -371,8 +375,8 @@ Based on our small test set, we can predict COVID patients in  `r label_percent(
 &nbsp;
 &nbsp;
 
-**Large test set**
-```{r, echo = F, fig.align="center"}
+
+```{r, echo = F, fig.align="center", eval = F}
 #load model
 b16l <- vgg16_binary %>% evaluate_generator(generator = large_test_binary, steps = large_test_binary$n / large_test_binary$batch_size)
 
@@ -383,9 +387,8 @@ predicted <- (apply(X = predicted, MARGIN = 1, FUN = which.max) - 1) %>% factor(
 observed <- large_test_binary$classes %>% factor(labels = c("COVID+", "COVID-"))
 confusionMatrix(predicted, observed)
 
-predicted
 ```
-When we test our model on the large dataset, the accuracy reaches `r label_percent(accuracy = 4)(round(b16l$categorical_accuracy,4))`.  
+
 
 &nbsp;
 
@@ -431,8 +434,8 @@ Based on our small test set, we can predict COVID patients in `r label_percent(a
 &nbsp;
 
 
-**Large test set**
-```{r, echo = F, fig.align="center"}
+
+```{r, echo = F, fig.align="center", eval = F}
 bindenl <- den201_binary %>% evaluate_generator(generator = large_test_binary, steps = large_test_binary$n / large_test_binary$batch_size)
 
 print(bindenl)
@@ -443,7 +446,7 @@ observed <- large_test_binary$classes %>% factor(labels = c("COVID+", "COVID-"))
 confusionMatrix(predicted, observed)
 
 ```
-When we test our model on the large dataset, the accuracy reaches `r label_percent(accuracy = 4)(round(bindenl$categorical_accuracy,4))`.
+
 &nbsp;
 
 ### Multiclass VGG16
@@ -482,7 +485,7 @@ print(mc16s)
 
 predicted <- vgg16_mc %>% predict_generator(generator = test_mc, steps = 1)
 predicted <- (apply(X = predicted, MARGIN = 1, FUN = which.max) - 1) %>% factor(labels = c("COVID+", "COVID-", "Viral P.", "Bacterial P."))
-observed <- test_binary$classes %>% factor(labels = c("COVID+", "COVID-", "Viral P.", "Bacterial P."))
+observed <- test_mc$classes %>% factor(labels = c("COVID+", "COVID-", "Viral P.", "Bacterial P."))
 confusionMatrix(predicted, observed)
 
 ```
@@ -492,30 +495,38 @@ Based on our small test set, we can predict COVID patients in `r label_percent(a
 &nbsp;
 &nbsp;
 
-**Large test set**
-```{r, echo = F, fig.align="center"}
+
+```{r, echo = F, fig.align="center", eval = F}
+#Multiclass classification on large test set
 mc16l <- vgg16_mc %>% evaluate_generator(generator = large_test_mc, steps = large_test_mc$n / large_test_mc$batch_size)
 
 print(mc16l)
-
+#This is a large test set for the multiclass classification. It has approximately 6000 photos and is heavy to knit, therefore we do not include it in the report. 
 ```
-When we test our model on the large dataset, the accuracy reaches `r label_percent(accuracy = 4)(round(mc16l$categorical_accuracy,4))`.
+
 
 
 ### Multiclass DenseNet201
 We discard this model because the accuracy of the best model after tuning is less than 60%. 
 
-## {-}
+
 
 ## Limitations / Improvements
 Based on our two analyses, we think that further improvements could be made. First, X-rays of healthy patients are in fact images of children because we did not find reliable data of adults. This is one of the main limitations of our project. Did the model learn to correctly identify features specific to COVID infection or did it learn to distinguish between adults and children ? The most likely answer is that our model is sensitive to specific features of COVID+ patients. Still, it would be good to have access to healthy adults data to check if this is truly the case. 
 
 Another improvement which could be made is access to more COVID+ images. At the time being, too few images are freely accessible. This issue is not specific to our project because researchers used at most 224 images of infected patients. 
 
-If we had been able to compute the confusion matrix, then we could have further elaborated on sensitivity and specificity. This is even more important in an epidemiological context. Even if we used the validation categorical accuracy and the validation loss as our first and second metrics, the most important criterion besides these is sensitivity. False negatives are much more costly because this would mean undetecting infected people. 
+ This is even more important in an epidemiological context. Even if we used the validation categorical accuracy and the validation loss as our first and second metrics, the most important criterion besides these is sensitivity. False negatives are much more costly because this would mean undetecting infected people. 
 
 So the next steps would be to collect images of healthy adults, to have more COVID chest X-rays and to use the sensitivity as a metric to improve how efficient our model can be. 
 
+
+## Conclusion
+To conclude, we would advise considering DenseNet201 for the binary task and VGG16 for the multiclass task. From a technical and a contextual point of view, DenseNet201 is better because its accuracy is higher and its sensitivity, which is invaluable to our goal, is higher than of the other model as well.  When we test both models on the small test sets, DenseNet201 gives better results.  Moreover, DenseNet201 has approximately a size 1/6th of that of VGG16 (80MB vs 528MB). Therefore, we will choose DenseNet201 for the binary task. 
+</p>
+On the other hand, for the multiclass classification, VGG16 performs much better than DenseNet201, to the degree that the latter was disregarded in the multiclass model evaluation. 
+</p>
+To conclude, despite the limitations of our project, we think deep learning has great potential for specific medical applications such as x-rays analysis. This is especially true when the availability of the medical staff is the bottleneck of the process. We have not only learned how to apply a deep learning model but also to take the context of application into account. This model should be reviewed by a medical practitioner and should be complementary to the work of a radiologist and not its replacement. 
 
 ## <strong>References</strong>
 

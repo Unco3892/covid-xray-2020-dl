@@ -49,7 +49,7 @@ valid <- flow_images_from_directory(
 )
 
 #-----------------------------------------------------#
-#VGG-16 model architecture
+#DenseNet201 model architecture
 
 conv_base <- keras::application_densenet201(
   include_top = FALSE,
