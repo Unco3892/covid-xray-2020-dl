@@ -4,6 +4,7 @@ Welcome on our repo for the project of Deep Learning where we try to apply deep 
 
 ## Dataset
 All the data used for this project has been placed on this[drive](https://drive.google.com/open?id=128hxYxQ8kVEkSkVGikueiqBxWTmDIW2h). The structure of our datasets is the following:
+
 <center>
 <html>
 <body >
@@ -51,6 +52,7 @@ All the data used for this project has been placed on this[drive](https://drive.
 &nbsp;
 &nbsp;
 &nbsp;
+
 In the subfolder "data/final_data", you can find the cleaned and processed datasets which has been used for training the models and also contains a test folder for a small test set found in the report. Furthermore talking about the nature of the data itself, 
 
 you would find a folder "data/kermany_OTHERS" which consists of chest-x-ray scans of patients from 2018  who were health (forming our COVID-), or had viral or bacterial pneumonias. The original source of the data can be found on the [dataset's website](https://data.mendeley.com/datasets/rscbjbr9sj/3
